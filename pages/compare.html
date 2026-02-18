@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -6,13 +6,47 @@
     <link href="../dist/output.css" rel="stylesheet" />
     <title>Vergelijken</title>
   </head>
-  <body>
+  <body class="w-full">
+    <!-- Header  -->
     <header class="bg-navcolor p-3 font-bold">
       <h1 class="text-black">Vergelijk Games</h1>
     </header>
-    <main>
-      <img src="../images/zelda.jpg" alt="" />
-      <img src="" alt="" class="border-black rounded-lg" />
+    <!-- Main  -->
+    <main class="max-w-6xl mx-auto px-6 mt-10 flex flex-col md:flex-row gap-10">
+      <!-- Game 1  -->
+      <section
+        id="game_card_1"
+        class="flex-1 bg-gray-100 p-6 rounded-lg shadow"
+      >
+        <img src="../images/no-cover.png" alt="" class="object-cover h-40" />
+        <h2>Game Naam</h2>
+        <ul>
+          <li>Genre</li>
+          <li>Release</li>
+          <li>Platform</li>
+          <li>Rating</li>
+        </ul>
+        <form>
+          <input type="search" placeholder="Zoek een game..." />
+        </form>
+      </section>
+      <!-- Game 2  -->
+      <section
+        id="game_card_2"
+        class="flex-1 bg-gray-100 p-6 rounded-lg shadow"
+      >
+        <img src="../images/no-cover.png" alt="" class="object-cover h-40" />
+        <h2>Game Naam</h2>
+        <ul>
+          <li>Genre</li>
+          <li>Release</li>
+          <li>Platform</li>
+          <li>Rating</li>
+        </ul>
+        <form>
+          <input type="search" placeholder="Zoek een game..." />
+        </form>
+      </section>
     </main>
   </body>
 </html>
