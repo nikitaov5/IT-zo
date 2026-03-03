@@ -1,20 +1,27 @@
 <!doctype html>
-<html lang="en">
+<html lang="nl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Collection</title>
     <link href="../dist/output.css" rel="stylesheet" />
+    <script src="../scripts/collection-scripts/collection.js"></script>
   </head>
-  <body>
+  <body class="sm:text-left bg-slate-900 text-slate-100">
     <header
       class="fixed top-0 right-0 left-0 bg-slate-200 flex items-center gap-6 p-4"
     >
-      <div class="flex gap-6 font-bold text-xl">
-        <h2 class="underline"><a href="./index.html">Main</a></h2>
-        <h2 class="underline"><a href="./collection.html">Collection</a></h2>
-        <h2 class="underline"><a href="./compare.html">Compare</a></h2>
-        <h2 class="underline">GTG</h2>
+      <div
+        class="fixed top-0 right-0 left-0 bg-slate-200 text-slate-800 flex items-center gap-6 p-4"
+      >
+        <h2><a href="./index.html">Main</a></h2>
+        <h2 class="underline">
+          <a href="./collection.html"> Collection</a>
+        </h2>
+        <h2>
+          <a href="./compare.html"> Compare</a>
+        </h2>
+        <h2>GTG</h2>
         <h2>Huidige game</h2>
       </div>
       <div
@@ -24,17 +31,40 @@
       </div>
     </header>
 
-    <main class="mt-24 p-8">
-      <section class="grid grid-cols-2 md:grid-cols-4 gap-8">
-        <!-- GAME CARD -->
-        <article class="game-card cursor-pointer">
+    <main class="mt-24 p-4 md:p-8">
+      <section
+        class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 text-center gap-4 md:gap-8"
+      >
+        <article>
           <figure class="border hover:border-indigo-500 transition">
-            <!-- Hier moet de image -->
-            <figcaption class="p-4 text-center">[Game]</figcaption>
+            <figcaption class="p-4 text-center"></figcaption>
           </figure>
         </article>
-
-        <!-- Duplicate deze article voor meerdere games -->
+        <article>
+          <figure class="border hover:border-indigo-500 transition">
+            <figcaption class="p-4 text-center"></figcaption>
+          </figure>
+        </article>
+        <article>
+          <figure class="border hover:border-indigo-500 transition">
+            <figcaption class="p-4 text-center"></figcaption>
+          </figure>
+        </article>
+        <article>
+          <figure class="border hover:border-indigo-500 transition">
+            <figcaption class="p-4 text-center"></figcaption>
+          </figure>
+        </article>
+        <article>
+          <figure class="border hover:border-indigo-500 transition">
+            <figcaption class="p-4 text-center"></figcaption>
+          </figure>
+        </article>
+        <article>
+          <figure class="border hover:border-indigo-500 transition">
+            <figcaption class="p-4 text-center"></figcaption>
+          </figure>
+        </article>
       </section>
     </main>
   </body>
