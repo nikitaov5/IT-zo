@@ -3,13 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
     <link href="../dist/output.css" rel="stylesheet" />
-    <title>Vergelijken</title>
+    <title>Guess The Game!</title>
   </head>
   <body class="w-full sm:text-left bg-slate-900 text-slate-100">
     <!-- Header  -->
     <header class="bg-navcolor p-3 font-bold">
-      <div class="max-w-6xl mx-auto px-6 py-1 flex gap-10">
+      <div
+        class="max-w-6xl mx-auto px-6 py-1 flex items-center justify-between"
+      >
         <nav class="text-black flex gap-10">
           <a href="./compare.html"
             ><svg
@@ -62,44 +68,49 @@
             </svg>
           </a>
         </nav>
+
+        <div class="flex gap-1 text-black">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="size-6"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12.963 2.286a.75.75 0 0 0-1.071-.136 9.742 9.742 0 0 0-3.539 6.176 7.547 7.547 0 0 1-1.705-1.715.75.75 0 0 0-1.152-.082A9 9 0 1 0 15.68 4.534a7.46 7.46 0 0 1-2.717-2.248ZM15.75 14.25a3.75 3.75 0 1 1-7.313-1.172c.628.465 1.35.81 2.133 1a5.99 5.99 0 0 1 1.925-3.546 3.75 3.75 0 0 1 3.255 3.718Z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span>0</span>
+        </div>
       </div>
     </header>
-    <!-- Main  -->
-    <main class="max-w-6xl mx-auto px-6 mt-10 flex flex-col md:flex-row gap-10">
-      <!-- Game 1  -->
+
+    <!-- MAIN -->
+    <main class="max-w-6xl mx-auto px-6 mt-8 flex flex-col gap-4">
       <section
-        id="game_card_1"
-        class="flex-1 bg-gray-100 p-6 rounded-lg shadow"
+        id="game"
+        class="w-full bg-black rounded-lg shadow outline-white"
+        style="aspect-ratio: 16/9; max-height: 360px"
       >
-        <img src="../images/no-cover.png" alt="" class="object-cover h-40" />
-        <h2>Game Naam</h2>
-        <ul>
-          <li>Genre</li>
-          <li>Release</li>
-          <li>Platform</li>
-          <li>Rating</li>
-        </ul>
-        <form>
-          <input type="search" placeholder="Zoek een game..." />
-        </form>
+        <!-- Foto hier injecteren -->
       </section>
-      <!-- Game 2  -->
-      <section
-        id="game_card_2"
-        class="flex-1 bg-gray-100 p-6 rounded-lg shadow"
-      >
-        <img src="../images/no-cover.png" alt="" class="object-cover h-40" />
-        <h2>Game Naam</h2>
-        <ul>
-          <li>Genre</li>
-          <li>Release</li>
-          <li>Platform</li>
-          <li>Rating</li>
-        </ul>
-        <form>
-          <input type="search" placeholder="Zoek een game..." />
-        </form>
-      </section>
+
+      <input
+        type="text"
+        placeholder="Welke game is het?"
+        class="w-full bg-gray-100 text-black placeholder-gray-400 rounded-full px-5 py-3 outline-none border border-gray-200 focus:border-blue-400 transition"
+      />
+
+      <!-- Score -->
+      <div class="flex justify-center">
+        <div
+          class="border border-gray-400 text-slate-100 rounded px-8 py-2 font-medium text-base"
+        >
+          Score: 0
+        </div>
+      </div>
     </main>
   </body>
 </html>
