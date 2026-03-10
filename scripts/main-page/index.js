@@ -26,7 +26,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                     "cursor-pointer border-2 border-slate-700 rounded-xl overflow-hidden shadow-2xl transition hover:scale-[1.02] hover:border-indigo-500";
                 const img = document.createElement("img");
                 img.src = game.background_image;
-                img.className = "w-full object-cover border border-gray-500 ";
+                img.className = "w-full aspect-video object-cover border border-gray-500 ";
                 const title = document.createElement("div");
                 title.className = "p-2 text-center font-bold";
                 title.textContent = game.name;

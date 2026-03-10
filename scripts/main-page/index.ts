@@ -48,7 +48,7 @@ interface ApiResponse {
 
       const img = document.createElement("img");
       img.src = game.background_image;
-      img.className = "w-full object-cover border border-gray-500 ";
+      img.className = "w-full aspect-video object-cover border border-gray-500 ";
 
       const title = document.createElement("div");
       title.className = "p-2 text-center font-bold";
