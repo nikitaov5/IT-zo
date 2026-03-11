@@ -81,50 +81,61 @@
     </header>
 
     <!-- Main  -->
-    <main class="max-w-6xl mx-auto px-6 mt-20 flex flex-col md:flex-row gap-10">
+    <main class="max-w-6xl mx-auto px-6 mt-20 flex flex-col md:flex-row gap-6">
       <!-- Game 1  -->
       <section
         id="game_card_1"
-        class="flex-1 bg-gray-100 text-black p-6 rounded-lg shadow"
+        class="flex-1 bg-slate-800 text-slate-100 shadow-lg overflow-hidden border border-slate-700 rounded-lg"
       >
         <img
           src="../assets/images/no-cover.png"
           alt=""
-          class="w-56 aspect-video object-cover"
+          class="w-full aspect-video object-cover rounded-lg"
           id="gameImg"
         />
-        <h2 id="gameName">Game Naam</h2>
-        <ul>
-          <li id="gameGenre">Genre</li>
-          <li id="gameRelease">Release</li>
-          <li id="gamePlatform">Platform</li>
-          <li id="gameRating">Rating</li>
-        </ul>
-        <form>
-          <input type="search" placeholder="Zoek een game..." />
-        </form>
+        <div class="px-5 py-2 flex flex-col gap-3">
+          <h2 id="gameName" class="text-lg font-bold text-white">Game Naam</h2>
+          <ul class="flex flex-col gap-1.5 text-sm text-slate-400">
+            <li id="gameGenre">Genre</li>
+            <li id="gameRelease">Release</li>
+            <li id="gamePlatform">Platform</li>
+            <li id="gameRating" class="text-amber-400 font-semibold">Rating</li>
+          </ul>
+          <input
+            type="search"
+            placeholder="Zoek een game..."
+            class="mt-1 w-full bg-slate-900 text-slate-100 placeholder-slate-500 rounded-lg px-4 py-2 text-sm outline-none transition"
+          />
+        </div>
       </section>
+
       <!-- Game 2  -->
       <section
         id="game_card_2"
-        class="flex-1 bg-gray-100 text-black p-6 rounded-lg shadow"
+        class="flex-1 bg-slate-800 text-slate-100 rounded-xl shadow-lg overflow-hidden border border-slate-700 rounded-lg"
       >
         <img
           src=""
           alt=""
-          class="w-56 aspect-video object-cover"
+          class="w-full aspect-video object-cover rounded-lg"
           id="gameImg2"
         />
-        <h2 id="gameName2">Game Naam</h2>
-        <ul>
-          <li id="gameGenre2">Genre</li>
-          <li id="gameRelease2">Release</li>
-          <li id="gamePlatform2">Platform</li>
-          <li id="gameRating2">Rating</li>
-        </ul>
-        <form>
-          <input type="search" placeholder="Zoek een game..." />
-        </form>
+        <div class="px-5 py-2 flex flex-col gap-3">
+          <h2 id="gameName2" class="text-lg font-bold text-white">Game Naam</h2>
+          <ul class="flex flex-col gap-1.5 text-sm text-slate-400">
+            <li id="gameGenre2">Genre</li>
+            <li id="gameRelease2">Release</li>
+            <li id="gamePlatform2">Platform</li>
+            <li id="gameRating2" class="text-amber-400 font-semibold">
+              Rating
+            </li>
+          </ul>
+          <input
+            type="search"
+            placeholder="Zoek een game..."
+            class="mt-1 w-full bg-slate-900 text-slate-100 placeholder-slate-500 rounded-lg px-4 py-2 text-sm outline-none transition"
+          />
+        </div>
       </section>
     </main>
   </body>
