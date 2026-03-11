@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="../dist/output.css" rel="stylesheet" />
     <title>Vergelijken</title>
+    <script type="module" src="/scripts/compare/compare.js" defer></script>
   </head>
   <body class="w-full sm:text-left bg-slate-900 text-slate-100">
     <!-- Header  -->
@@ -89,14 +90,15 @@
         <img
           src="../assets/images/no-cover.png"
           alt=""
-          class="object-cover h-40"
+          class="w-56 aspect-video object-cover"
+          id="gameImg"
         />
-        <h2>Game Naam</h2>
+        <h2 id="gameName">Game Naam</h2>
         <ul>
-          <li>Genre</li>
-          <li>Release</li>
-          <li>Platform</li>
-          <li>Rating</li>
+          <li id="gameGenre">Genre</li>
+          <li id="gameRelease">Release</li>
+          <li id="gamePlatform">Platform</li>
+          <li id="gameRating">Rating</li>
         </ul>
         <form>
           <input type="search" placeholder="Zoek een game..." />
@@ -108,16 +110,17 @@
         class="flex-1 bg-gray-100 text-black p-6 rounded-lg shadow"
       >
         <img
-          src="../assets/images/no-cover.png"
+          src=""
           alt=""
-          class="object-cover h-40"
+          class="w-56 aspect-video object-cover"
+          id="gameImg2"
         />
-        <h2>Game Naam</h2>
+        <h2 id="gameName2">Game Naam</h2>
         <ul>
-          <li>Genre</li>
-          <li>Release</li>
-          <li>Platform</li>
-          <li>Rating</li>
+          <li id="gameGenre2">Genre</li>
+          <li id="gameRelease2">Release</li>
+          <li id="gamePlatform2">Platform</li>
+          <li id="gameRating2">Rating</li>
         </ul>
         <form>
           <input type="search" placeholder="Zoek een game..." />

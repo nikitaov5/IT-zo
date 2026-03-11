@@ -50,10 +50,32 @@ async function fetchScreenshots() {
   gameSection.insertAdjacentElement("beforeend", img);
 }
 
-function checkGuess() {
-  const input = document.getElementById("guess-input");
+const input = document.getElementById("guess-input");
+const scoreEl = document.getElementById("score");
+const flameIcon = document.getElementById("flame");
+
+function updateScore(newScore) {
+  score = newScore;
+  scoreEl.textContent = score;
+  flameIcon.classList.toggle("hidden", score === 0);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   fetchScreenshots();
+
+  input.addEventListener("keyup", function (e) {
+    if (e.key !== "Enter") return;
+
+    const guess = input.value.trim().toLowerCase();
+
+    if (guess === "juistegame") {
+      updateScore(score + 1);
+      input.value = "";
+      fetchScreenshots();
+    } else {
+      updateScore(0);
+      scoreEl.textContent = score;
+      input.value = "";
+    }
+  });
 });
