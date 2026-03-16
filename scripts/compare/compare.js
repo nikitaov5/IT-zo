@@ -8,7 +8,7 @@ function fillCard(game, id) {
   document.getElementById(id.genre).textContent =
     "Genre: " + game.genres.map((g) => g.name).join(", ");
   document.getElementById(id.release).textContent =
-    "Release Datum: " + game.name;
+    "Release Datum: " + game.released;
   document.getElementById(id.platform).textContent =
     "Platform: " + game.parent_platforms.map((p) => p.platform.name).join(", ");
   document.getElementById(id.rating).textContent = "Rating: " + game.rating;
