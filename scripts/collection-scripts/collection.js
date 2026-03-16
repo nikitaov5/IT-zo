@@ -21,7 +21,7 @@ async function loadCollection() {
         const img = document.createElement("img");
         img.src = game.background_image;
         img.alt = game.name;
-        img.className = "w-full object-cover";
+        img.className = "w-full object-cover aspect-video";
 
         // Update figcaption
         figcaption.textContent = game.name;
