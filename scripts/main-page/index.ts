@@ -11,6 +11,24 @@ interface EsrbRating {
   slug: string;
 }
 
+interface Genre {
+  name: string;
+}
+
+interface Store {
+  name: string;
+  image_background: string;
+}
+
+interface Platform {
+  name: string;
+  image_background: string;
+}
+
+interface PlatformWrapper {
+  platform: Platform;
+}
+
 interface Games {
   id: number;
   name: string;
@@ -21,24 +39,31 @@ interface Games {
   rating_top: number;
   ratings: Ratings;
   esrb_rating: EsrbRating;
+  platforms: PlatformWrapper[];
+  genres: Genre[];
+  stores: Store[];
 }
 
 interface ApiResponse {
   results: Games[];
 }
 
-(async function () {
+let currentPage = 1;
+async function loadGames(page: number) {
   try {
     const response = await fetch(
-      "https://api.rawg.io/api/games?key=f261bf4dc1a84efeab97fb873bdedb9d",
+      `https://api.rawg.io/api/games?key=f261bf4dc1a84efeab97fb873bdedb9d&page=${page}`,
     );
     let games: ApiResponse = await response.json();
-    /*
-    games = games.filter((game) => {
-      game.esrb_rating.id != 4
-    }) */
 
-    const grid: HTMLElement | null = document.getElementById("gamesGrid");
+    /*
+    let filteredGames: Games[] = games.results.filter((game) => {
+      game.esrb_rating.id = 4;
+    }); */
+
+    const grid = document.getElementById("gamesGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
 
     games.results.forEach((game) => {
       if (!game.background_image) return; // sla games zonder afbeelding over
@@ -67,17 +92,43 @@ interface ApiResponse {
         const releaseClick = document.getElementById("gameRelease");
         const playtimeClick = document.getElementById("gamePlaytime");
         const ratingClick = document.getElementById("gameRating");
+        const platformClick = document.getElementById("gamePlatform");
+        const genreClick = document.getElementById("gameGenre");
+        const storeClick = document.getElementById(
+          "gameStore",
+        ) as HTMLImageElement;
 
         if (titleClick) titleClick.textContent = game.name;
         if (imgClick) imgClick.src = game.background_image;
         if (releaseClick)
           releaseClick.textContent = `Released: ${game.released}`;
         if (playtimeClick)
-          playtimeClick.textContent = `Playtime: ${game.playtime} uur`;
-        if (ratingClick) ratingClick.textContent = `Rating: ${game.rating}`;
+          playtimeClick.textContent = `Average Playtime: ${game.playtime} uur`;
+        if (ratingClick) ratingClick.textContent = `Rating: ${game.rating}/5`;
+        if (platformClick && genreClick /*&& storeClick */) {
+          platformClick.textContent = `Available Platforms: ${game.platforms.map((p) => p.platform.name).join(", ")}`;
+          genreClick.textContent = `Genres: ${game.genres.map((p) => p.name).join(", ")}`;
+          //storeClick.src = `Available stores: ${game.stores.map((p) => p.image_background).join(", ")}`;
+        }
       });
     });
   } catch (error: any) {
     console.log(error);
   }
-})();
+}
+
+document.getElementById("nextPage")?.addEventListener("click", () => {
+  currentPage++;
+  loadGames(currentPage);
+  document.getElementById("pageNumber")!.textContent = currentPage.toString();
+});
+
+document.getElementById("prevPage")?.addEventListener("click", () => {
+  if (currentPage > 1) {
+    currentPage--;
+    loadGames(currentPage);
+    document.getElementById("pageNumber")!.textContent = currentPage.toString();
+  }
+});
+
+loadGames(1);
