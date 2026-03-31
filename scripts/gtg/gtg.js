@@ -7,7 +7,7 @@ let score = 0;
 let currentGameName = "";
 
 async function fetchScreenshots() {
-  const randomGamePK = Math.floor(Math.random() * 5) + 1;
+  const randomGamePK = Math.floor(Math.random() * 2) + 1;
 
   // fetch voor game
   const response = await fetch(
