@@ -1,4 +1,4 @@
-<%- include('partials/header') %>
+<%- include ('partials/header') %>
 <header
       class="fixed top-0 right-0 left-0 bg-slate-200 text-slate-800 flex items-center gap-6 p-4"
     >
@@ -68,85 +68,64 @@
           </svg>
         </a>
       </nav>
-
-      <div
-        class="w-64 rounded-full bg-slate-100 border border-slate-300 px-4 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:bg-white transition ml-auto"
-      >
-        Game zoeken...
-      </div>
     </header>
 
-    <main class="mt-20 p-8 grid grid-cols-12 gap-8">
-      <div
-        class="col-span-12 lg:col-span-8 flex items-center justify-center gap-4 mb-4"
+    <!-- Main  -->
+    <main class="max-w-6xl mx-auto px-6 mt-20 flex flex-col md:flex-row gap-6">
+      <!-- Game 1  -->
+      <section
+        id="game_card_1"
+        class="flex-1 bg-slate-800 text-slate-100 shadow-lg overflow-hidden border border-slate-700 rounded-lg"
       >
-        <button
-          id="prevPage"
-          class="px-4 py-2 bg-slate-200 text-slate-800 rounded"
-        >
-          Vorige
-        </button>
-
-        <span id="pageNumber" class="font-bold">1</span>
-
-        <button
-          id="nextPage"
-          class="px-4 py-2 bg-slate-200 text-slate-800 rounded"
-        >
-          Volgende
-        </button>
-      </div>
-      <div
-        id="gamesGrid"
-        class="order-2 lg:order-1 col-span-12 lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-      ></div>
-      <div
-        class="order-1 lg:order-2 md:flex col-span-12 md:col-span-12 lg:col-span-4 flex-col items-center justify-center text-center lg:sticky lg:top-32 h-fit"
-      >
-        <h2 id="gameName" class="text-xl font-bold mb-6"></h2>
-        <img id="gameImage" class="w-full rounded-lg mb-4" />
-        <p class="bottom-4">Kies een game</p>
-        <button
-          class="border px-6 py-2 rounded mb-4 bg-slate-200 text-slate-800"
-        >
-          Toevoegen aan collectie
-        </button>
-        <button
-          class="border px-6 py-2 rounded mb-8 bg-slate-200 text-slate-800"
-        >
-          Als huidige game aanduiden
-        </button>
-        <div class="text-center mt-auto">
-          <p id="gameRelease"></p>
-          <p id="gamePlaytime" class="mt-4"></p>
-          <p id="gameRating"></p>
-          <p id="gamePlatform"></p>
-          <p id="gameGenre"></p>
-          <p id="gameStore"></p>
+        <img
+          src="../assets/images/no-cover.png"
+          alt=""
+          class="w-full aspect-video object-cover rounded-lg"
+          id="gameImg"
+        />
+        <div class="px-5 py-2 flex flex-col gap-3">
+          <h2 id="gameName" class="text-lg font-bold text-white">Game Naam</h2>
+          <ul class="flex flex-col gap-1.5 text-sm text-slate-400">
+            <li id="gameGenre">Genre</li>
+            <li id="gameRelease">Release</li>
+            <li id="gamePlatform">Platform</li>
+            <li id="gameRating" class="text-amber-400 font-semibold">Rating</li>
+          </ul>
+          <input
+            type="search"
+            placeholder="Zoek een game..."
+            class="mt-1 w-full bg-slate-900 text-slate-100 placeholder-slate-500 rounded-lg px-4 py-2 text-sm outline-none transition"
+          />
         </div>
-      </div>
+      </section>
+
+      <!-- Game 2  -->
+      <section
+        id="game_card_2"
+        class="flex-1 bg-slate-800 text-slate-100 rounded-xl shadow-lg overflow-hidden border border-slate-700 rounded-lg"
+      >
+        <img
+          src="../assets/images/no-cover.png"
+          alt=""
+          class="w-full aspect-video object-cover rounded-lg"
+          id="gameImg2"
+        />
+        <div class="px-5 py-2 flex flex-col gap-3">
+          <h2 id="gameName2" class="text-lg font-bold text-white">Game Naam</h2>
+          <ul class="flex flex-col gap-1.5 text-sm text-slate-400">
+            <li id="gameGenre2">Genre</li>
+            <li id="gameRelease2">Release</li>
+            <li id="gamePlatform2">Platform</li>
+            <li id="gameRating2" class="text-amber-400 font-semibold">
+              Rating
+            </li>
+          </ul>
+          <input
+            type="search"
+            placeholder="Zoek een game..."
+            class="mt-1 w-full bg-slate-900 text-slate-100 placeholder-slate-500 rounded-lg px-4 py-2 text-sm outline-none transition"
+          />
+        </div>
+      </section>
     </main>
-    <footer class="bg-neutral-primary-soft rounded-base">
-      <div
-        class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between"
-      >
-        <span class="text-sm text-body sm:text-center"
-          >© 2026 <a class="hover:underline">IT&Zo™</a>. All Rights
-          Reserved.</span
-        >
-      </div>
-      <ul
-        class="flex flex-wrap items-center mt-3 text-sm font-medium text-body sm:mt-0"
-      >
-        <li>
-          <a href="#" class="hover:underline me-4 md:me-6">About</a>
-        </li>
-        <li>
-          <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
-        </li>
-        <li>
-          <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
-        </li>
-      </ul>
-    </footer>
-<%- include('partials/footer') %>
+<%- include ('partials/footer') %>

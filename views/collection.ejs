@@ -1,4 +1,4 @@
-<%- include('partials/header') %>
+<%- include ('partials/header') %>
 <header
       class="fixed top-0 right-0 left-0 bg-slate-200 text-slate-800 flex items-center gap-6 p-4"
     >
@@ -76,77 +76,54 @@
       </div>
     </header>
 
-    <main class="mt-20 p-8 grid grid-cols-12 gap-8">
-      <div
-        class="col-span-12 lg:col-span-8 flex items-center justify-center gap-4 mb-4"
+    <main class="mt-24 p-4 md:p-8">
+      <section
+        class="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
       >
-        <button
-          id="prevPage"
-          class="px-4 py-2 bg-slate-200 text-slate-800 rounded"
-        >
-          Vorige
-        </button>
-
-        <span id="pageNumber" class="font-bold">1</span>
-
-        <button
-          id="nextPage"
-          class="px-4 py-2 bg-slate-200 text-slate-800 rounded"
-        >
-          Volgende
-        </button>
-      </div>
-      <div
-        id="gamesGrid"
-        class="order-2 lg:order-1 col-span-12 lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-      ></div>
-      <div
-        class="order-1 lg:order-2 md:flex col-span-12 md:col-span-12 lg:col-span-4 flex-col items-center justify-center text-center lg:sticky lg:top-32 h-fit"
-      >
-        <h2 id="gameName" class="text-xl font-bold mb-6"></h2>
-        <img id="gameImage" class="w-full rounded-lg mb-4" />
-        <p class="bottom-4">Kies een game</p>
-        <button
-          class="border px-6 py-2 rounded mb-4 bg-slate-200 text-slate-800"
-        >
-          Toevoegen aan collectie
-        </button>
-        <button
-          class="border px-6 py-2 rounded mb-8 bg-slate-200 text-slate-800"
-        >
-          Als huidige game aanduiden
-        </button>
-        <div class="text-center mt-auto">
-          <p id="gameRelease"></p>
-          <p id="gamePlaytime" class="mt-4"></p>
-          <p id="gameRating"></p>
-          <p id="gamePlatform"></p>
-          <p id="gameGenre"></p>
-          <p id="gameStore"></p>
-        </div>
-      </div>
+        <article>
+          <figure class="border hover:border-indigo-500 transition">
+            <figcaption class="p-4 text-center"></figcaption>
+          </figure>
+        </article>
+        <article>
+          <figure class="border hover:border-indigo-500 transition">
+            <figcaption class="p-4 text-center"></figcaption>
+          </figure>
+        </article>
+        <article>
+          <figure class="border hover:border-indigo-500 transition">
+            <figcaption class="p-4 text-center"></figcaption>
+          </figure>
+        </article>
+        <article>
+          <figure class="border hover:border-indigo-500 transition">
+            <figcaption class="p-4 text-center"></figcaption>
+          </figure>
+        </article>
+        <article>
+          <figure class="border hover:border-indigo-500 transition">
+            <figcaption class="p-4 text-center"></figcaption>
+          </figure>
+        </article>
+        <article>
+          <figure class="border hover:border-indigo-500 transition">
+            <figcaption class="p-4 text-center"></figcaption>
+          </figure>
+        </article>
+      </section>
     </main>
-    <footer class="bg-neutral-primary-soft rounded-base">
-      <div
-        class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between"
-      >
-        <span class="text-sm text-body sm:text-center"
-          >© 2026 <a class="hover:underline">IT&Zo™</a>. All Rights
-          Reserved.</span
-        >
-      </div>
-      <ul
-        class="flex flex-wrap items-center mt-3 text-sm font-medium text-body sm:mt-0"
-      >
+    <footer class="bg-neutral-primary-soft rounded-base ">
+    <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+      <span class="text-sm text-body sm:text-center">© 2026 <a class="hover:underline">IT&Zo™</a>. All Rights Reserved.
+    </span>
+    <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-body sm:mt-0">
         <li>
-          <a href="#" class="hover:underline me-4 md:me-6">About</a>
+            <a href="#" class="hover:underline me-4 md:me-6">About</a>
         </li>
         <li>
-          <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
+            <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
         </li>
         <li>
-          <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
-        </li>
-      </ul>
-    </footer>
-<%- include('partials/footer') %>
+            <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
+  </footer>
+<%- include ('partials/footer') %>

@@ -16,6 +16,23 @@ app.get("/home", (req, res) => {
   res.render("home");
 });
 
+app.get("/collection", (req, res) => {
+  res.render("collection");
+});
+
+app.get("/compare", (req, res) => {
+  res.render("compare");
+});
+
+app.get("/gtg", (req, res) => {
+  res.render("gtg");
+});
+
+// Test voor unavailable page, later werken met redirect
+app.get("/unavailable", (req, res) => {
+  res.render("unavailable");
+});
+
 app.listen(app.get("port"), () =>
   console.log("[server] http://localhost:" + app.get("port")),
 );
