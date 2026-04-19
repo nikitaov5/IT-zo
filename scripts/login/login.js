@@ -1,4 +1,4 @@
-let form = document.getElementById("loginForm");
+const form = document.getElementById("loginForm");
 const alertBox = document.getElementById("alertBox");
 const alertText = document.getElementById("alertText");
 
@@ -15,6 +15,10 @@ const users = [
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
+
+  // reset alert
+  alertBox.classList.remove("hidden");
+
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
