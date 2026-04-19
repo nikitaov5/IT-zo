@@ -1,4 +1,6 @@
 let form = document.getElementById("loginForm");
+const alertBox = document.getElementById("alertBox");
+const alertText = document.getElementById("alertText");
 
 const users = [
   {
@@ -16,17 +18,38 @@ form.addEventListener("submit", function (e) {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  let userLogin;
-  users.forEach((user) => {
-    if (user.email === email && user.password === password) {
-      userLogin = user;
-    }
-  });
+  const user = users.find((u) => u.email === email && u.password === password);
 
-  if (userLogin) {
-    alert("Login succesvol!");
-    window.location.href = "./home.html";
+  if (user) {
+    alertBox.classList.remove("hidden");
+    alertBox.classList.remove("bg-red-900", "border-red-700", "text-red-300");
+
+    alertBox.classList.add(
+      "bg-green-900",
+      "border-green-700",
+      "text-green-300",
+    );
+
+    alertText.innerHTML =
+      "<span class='font-medium me-1'>Success!</span> Login gelukt!";
+
+    setTimeout(() => {
+      window.location.href = "./home.html";
+    }, 1500);
   } else {
-    alert("Foute login");
+    alertBox.classList.remove("hidden");
+    alertBox.classList.add(
+      "bg-green-900",
+      "border-green-700",
+      "text-green-300",
+    );
+
+    alertBox.classList.add("bg-red-900", "border-red-700", "text-red-300");
+
+    alertText.innerHTML =
+      "<span class='font-medium me-1'>Error!</span> Email of wachtwoord is fout.";
   }
+  setTimeout(() => {
+    alertBox.classList.add("hidden");
+  }, 3000);
 });
