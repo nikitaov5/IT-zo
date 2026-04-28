@@ -28,6 +28,14 @@ app.get("/gtg", (req, res) => {
   res.render("gtg");
 });
 
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+
 // Test voor unavailable page, later werken met redirect
 app.get("/unavailable", (req, res) => {
   res.render("unavailable");
