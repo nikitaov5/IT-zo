@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 interface Ratings {
   id: number;
   name: string;
@@ -29,7 +30,8 @@ interface PlatformWrapper {
   platform: Platform;
 }
 
-interface Games {
+export interface Games {
+  _id?: ObjectId;
   id: number;
   name: string;
   released: string;
@@ -37,7 +39,7 @@ interface Games {
   rating: number;
   playtime: number;
   rating_top: number;
-  ratings: Ratings;
+  ratings: Ratings[];
   esrb_rating: EsrbRating;
   platforms: PlatformWrapper[];
   genres: Genre[];
@@ -70,7 +72,7 @@ async function loadGames(page: number) {
       const gameDiv = document.createElement("div");
       gameDiv.className =
         "cursor-pointer border-2 border-slate-700 rounded-xl overflow-hidden shadow-2xl transition hover:scale-[1.02] hover:border-indigo-500";
-
+      console.log(game.background_image);
       const img = document.createElement("img");
       img.src = game.background_image;
       img.className =
@@ -131,4 +133,4 @@ document.getElementById("prevPage")?.addEventListener("click", () => {
   }
 });
 
-loadGames(1);
+loadGames(1); //pagina nummer

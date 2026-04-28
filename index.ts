@@ -1,5 +1,8 @@
 import express from "express";
 import ejs from "ejs";
+import path from "path"
+import { MongoClient } from "mongodb";
+import {connect, gameDataCollection, getGames} from "./utils/database";
 
 const app = express();
 
@@ -8,12 +11,14 @@ app.set("view engine", "ejs");
 app.set("views", "./views");
 app.use(express.static("public"));
 
+
 app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.get("/home", (req, res) => {
-  res.render("home");
+app.get("/home", async (req, res) => {
+  const games = await getGames();
+  res.render("home", {games});
 });
 
 app.get("/collection", (req, res) => {
@@ -33,6 +38,13 @@ app.get("/unavailable", (req, res) => {
   res.render("unavailable");
 });
 
-app.listen(app.get("port"), () =>
-  console.log("[server] http://localhost:" + app.get("port")),
-);
+app.get("/:id", async (req, res) => {
+  const game = await gameDataCollection.findOne({ id: Number(req.params.id) });
+  res.json(game);
+});
+
+app.listen(app.get("port"), async () => {
+  await connect();
+  console.log("[server] http://localhost:" + app.get("port"))
+});
+
