@@ -16,17 +16,14 @@ async function loadCollection() {
         const game = games[index];
         const figure = article.querySelector("figure");
         const figcaption = article.querySelector("figcaption");
-
-        // Add image
         const img = document.createElement("img");
+
         img.src = game.background_image;
         img.alt = game.name;
         img.className = "w-full object-cover aspect-video";
 
-        // Update figcaption
         figcaption.textContent = game.name;
 
-        // Insert image before figcaption
         figure.insertBefore(img, figcaption);
       }
     });
