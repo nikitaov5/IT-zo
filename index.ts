@@ -6,7 +6,7 @@ import { MongoClient } from "mongodb";
 import { connect } from "./database-nikita/server";
 import { gameDataCollection } from "./database-nikita/db/collections";
 import { getGames } from "./database-nikita/services/gameService";
-import { loginUser } from "./database-nikita/services/userService";
+import { loginUser, createUser } from "./database-nikita/services/userService";
 
 const app = express();
 
@@ -49,6 +49,22 @@ app.post("/login", async (req, res) => {
     res.json({ message: "Login success", user });
   } catch (error: any) {
     res.status(401).json({ message: error.message });
+  }
+});
+
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+
+app.post("/register", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    await createUser(email, password);
+
+    res.json({ message: "User created" });
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
   }
 });
 
