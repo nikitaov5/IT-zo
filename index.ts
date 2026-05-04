@@ -4,7 +4,10 @@ import path from "path";
 import { MongoClient } from "mongodb";
 // import {connect, gameDataCollection, getGames} from "./utils/database";
 import { connect } from "./database-nikita/server";
-import { gameDataCollection } from "./database-nikita/db/collections";
+import {
+  userCollection,
+  gameDataCollection,
+} from "./database-nikita/db/collections";
 import { getGames } from "./database-nikita/services/gameService";
 import { loginUser, createUser } from "./database-nikita/services/userService";
 
@@ -25,8 +28,21 @@ app.get("/home", async (req, res) => {
   res.render("home", { games });
 });
 
-app.get("/collection", (req, res) => {
-  res.render("collection");
+app.get("/collection", async (req, res) => {
+  const user = await userCollection.findOne({
+    email: "test@test.com",
+  });
+
+  if (!user || !user.collection) {
+    return res.render("collection", { games: [] });
+  }
+
+  const games = await gameDataCollection
+    .find({ id: { $in: user.collection } })
+    .toArray();
+  console.log(games);
+
+  res.render("collection", { games });
 });
 
 app.get("/compare", (req, res) => {
