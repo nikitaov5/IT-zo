@@ -1,54 +1,5 @@
 import { ObjectId } from "mongodb";
-interface Ratings {
-  id: number;
-  name: string;
-  count: number;
-  percent: number;
-}
-
-interface EsrbRating {
-  id: number;
-  name: string;
-  slug: string;
-}
-
-interface Genre {
-  name: string;
-}
-
-interface Store {
-  name: string;
-  image_background: string;
-}
-
-interface Platform {
-  name: string;
-  image_background: string;
-}
-
-interface PlatformWrapper {
-  platform: Platform;
-}
-
-export interface Games {
-  _id?: ObjectId;
-  id: number;
-  name: string;
-  released: string;
-  background_image: string;
-  rating: number;
-  playtime: number;
-  rating_top: number;
-  ratings: Ratings[];
-  esrb_rating: EsrbRating;
-  platforms: PlatformWrapper[];
-  genres: Genre[];
-  stores: Store[];
-}
-
-interface ApiResponse {
-  results: Games[];
-}
+import { Games } from "./interfaces/interfaces";
 
 let currentPage = 1;
 async function loadGames() {
@@ -78,10 +29,12 @@ async function loadGames() {
       gameDiv.appendChild(title);
       grid?.appendChild(gameDiv);
 
+      let selectedGame: Games | null = null
       gameDiv.addEventListener("click", () => {
-      document.getElementById("gameName")!.textContent = game.name;
-      (document.getElementById("gameImage") as HTMLImageElement).src =
-      game.background_image;
+        selectedGame = game;
+        document.getElementById("gameName")!.textContent = game.name;
+        (document.getElementById("gameImage") as HTMLImageElement).src =
+        game.background_image;
 
       document.getElementById("gameRelease")!.textContent =
       `Released: ${game.released}`;
@@ -97,6 +50,7 @@ async function loadGames() {
 
       document.getElementById("gameGenre")!.textContent =
       `Genres: ${game.genres.map(g => g.name).join(", ")}`;
+      
 });;
     });
   } catch (error: any) {

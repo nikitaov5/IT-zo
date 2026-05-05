@@ -1,5 +1,12 @@
 import { Router } from "express";
-import { getGames } from "../utils/database";
+import session from "express-session";
+import { getGames, userCollection } from "../utils/database";
+
+declare module "express-session" {
+  interface SessionData {
+    email?: string;
+  }
+}
 
 const router = Router();
 
@@ -8,12 +15,27 @@ router.get("/", (req, res) => {
 });
 
 router.get("/home", async (req, res) => {
-  const games = await getGames();
+  const page = Number(req.query.page) || 1;
+  const games = await getGames(page);
   res.render("home", { games });
 });
 
 router.get("/collection", (req, res) => {
   res.render("collection");
+});
+
+router.post("/collection/add", async (req, res) => {
+  const { gameId } = req.body;
+  const email = req.session.email; 
+
+  if (!email) return res.status(401).json({ error: "Niet ingelogd" });
+
+  await userCollection.updateOne(
+    { email },
+    { $addToSet: { collection: gameId } } 
+  );
+
+  res.json({ success: true });
 });
 
 router.get("/compare", (req, res) => {

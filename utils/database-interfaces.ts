@@ -1,3 +1,9 @@
+export interface User {
+  email: string;
+  password: string;
+  collection?: number[]; // game IDs
+}
+
 export interface Games {
   id: number;
   name: string;
