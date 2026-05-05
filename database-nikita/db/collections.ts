@@ -5,8 +5,8 @@ import { Games } from "../models/Game";
 
 export const gameDataCollection: Collection<Games> = client
   .db("GameHubData")
-  .collection<Games>("games");
+  .collection<Games>("gameCollection");
 
 export const userCollection: Collection<User> = client
   .db("GameHubData")
-  .collection<User>("users");
+  .collection<User>("userCollection");

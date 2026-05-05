@@ -24,7 +24,7 @@ form.addEventListener("submit", async (e) => {
       alertBox.className =
         "p-4 text-green-300 bg-green-900 border border-green-700 rounded";
 
-      alertBox.innerHTML = "✅ Login gelukt!";
+      alertBox.innerHTML = "Login gelukt!";
 
       setTimeout(() => {
         window.location.href = "/home";
@@ -38,6 +38,6 @@ form.addEventListener("submit", async (e) => {
     alertBox.className =
       "p-4 text-red-300 bg-red-900 border border-red-700 rounded";
 
-    alertBox.innerHTML = "❌ " + (error.message || "Login mislukt");
+    alertBox.innerHTML = error.message || "Login mislukt";
   }
 });

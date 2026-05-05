@@ -40,7 +40,6 @@ app.get("/collection", async (req, res) => {
   const games = await gameDataCollection
     .find({ id: { $in: user.collection } })
     .toArray();
-  console.log(games);
 
   res.render("collection", { games });
 });
@@ -74,7 +73,13 @@ app.get("/register", (req, res) => {
 
 app.post("/register", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, confirmPassword } = req.body;
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        message: "Passwords do not match",
+      });
+    }
 
     await createUser(email, password);
 

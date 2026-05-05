@@ -6,6 +6,18 @@ form.addEventListener("submit", async (e) => {
 
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+
+  console.log(confirmPassword);
+
+  if (password !== confirmPassword) {
+    alertBox.classList.remove("hidden");
+    alertBox.className =
+      "p-4 text-red-300 bg-red-900 border border-red-700 rounded";
+
+    alertBox.innerHTML = "❌ Wachtwoorden komen niet overeen";
+    return;
+  }
 
   try {
     const response = await fetch("/register", {
@@ -13,7 +25,7 @@ form.addEventListener("submit", async (e) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, confirmPassword }),
     });
 
     const data = await response.json();
@@ -24,7 +36,7 @@ form.addEventListener("submit", async (e) => {
       alertBox.className =
         "p-4 text-green-300 bg-green-900 border border-green-700 rounded";
 
-      alertBox.innerHTML = "✅ Account aangemaakt!";
+      alertBox.innerHTML = "Account aangemaakt!";
 
       setTimeout(() => {
         window.location.href = "/login";
@@ -38,6 +50,6 @@ form.addEventListener("submit", async (e) => {
     alertBox.className =
       "p-4 text-red-300 bg-red-900 border border-red-700 rounded";
 
-    alertBox.innerHTML = "❌ " + (error.message || "Registratie mislukt");
+    alertBox.innerHTML = error.message || "Registratie mislukt";
   }
 });
