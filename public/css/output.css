@@ -728,6 +728,10 @@ video {
   min-height: 100vh;
 }
 
+.h-screen {
+  height: 100vh;
+}
+
 .w-32 {
   width: 8rem;
 }

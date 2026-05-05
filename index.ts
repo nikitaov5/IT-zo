@@ -10,6 +10,9 @@ import {
 } from "./database-nikita/db/collections";
 import { getGames } from "./database-nikita/services/gameService";
 import { loginUser, createUser } from "./database-nikita/services/userService";
+import { connect, gameDataCollection, getGames } from "./utils/database";
+import indexRouter from "./routers/indexRoutes";
+import gameRoutes from "./routers/gameRoutes";
 
 const app = express();
 
@@ -24,8 +27,9 @@ app.get("/", (req, res) => {
 });
 
 app.get("/home", async (req, res) => {
-  const games = await getGames();
-  res.render("home", { games });
+  const page = Number(req.query.page) || 1;
+  const games = await getGames(page);
+  res.render("home", {games});
 });
 
 app.get("/collection", async (req, res) => {

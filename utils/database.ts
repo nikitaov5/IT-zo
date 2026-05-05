@@ -42,3 +42,4 @@ async function seed() {
     await gameDataCollection.insertMany(data.results);
   }
 }
+
