@@ -3,12 +3,9 @@ import ejs from "ejs";
 import path from "path";
 import { MongoClient } from "mongodb";
 // import {connect, gameDataCollection, getGames} from "./utils/database";
-import { connect } from "./database-nikita/server";
 import {
   userCollection,
-  gameDataCollection,
 } from "./database-nikita/db/collections";
-import { getGames } from "./database-nikita/services/gameService";
 import { loginUser, createUser } from "./database-nikita/services/userService";
 import { connect, gameDataCollection, getGames } from "./utils/database";
 import indexRouter from "./routers/indexRoutes";

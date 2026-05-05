@@ -29,7 +29,7 @@ export async function connect() {
 export const gameDataCollection: Collection<Games> = client
   .db("GameHubData")
   .collection<Games>("GameHubData");
-export async function getGames() {
+export async function getGames(page: number) {
   return await gameDataCollection.find().toArray();
 }
 
