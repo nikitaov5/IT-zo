@@ -17,7 +17,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/home", async (req, res) => {
-  const games = await getGames();
+  const page = Number(req.query.page) || 1;
+  const games = await getGames(page);
   res.render("home", {games});
 });
 
