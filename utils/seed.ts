@@ -43,9 +43,15 @@ export async function seedUsers() {
     {
       email: "admin@gmail.com",
       password: "admin",
-      collection: [3498, 4200, 3328],
+      collection: [3498, 12020, 3328],
     },
-  ];  for (const user of users) {
+    {
+      email: "nikita@gmail.com",
+      password: "nikita",
+      collection: [3498, 12020, 3328],
+    },
+  ];
+  for (const user of users) {
     const exists = await userCollection.findOne({ email: user.email });
 
     if (!exists) {
@@ -60,5 +66,4 @@ export async function seedUsers() {
       console.log(`Seeded user: ${user.email}`);
     }
   }
-
 }
