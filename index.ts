@@ -1,8 +1,10 @@
 import express from "express";
 import ejs from "ejs";
-import path from "path"
+import path from "path";
 import { MongoClient } from "mongodb";
-import {connect, gameDataCollection, getGames} from "./utils/database";
+import { connect, gameDataCollection, getGames } from "./utils/database";
+import indexRouter from "./routers/indexRoutes";
+import gameRoutes from "./routers/gameRoutes";
 
 const app = express();
 
@@ -46,6 +48,5 @@ app.get("/:id", async (req, res) => {
 
 app.listen(app.get("port"), async () => {
   await connect();
-  console.log("[server] http://localhost:" + app.get("port"))
+  console.log("[server] http://localhost:" + app.get("port"));
 });
-
