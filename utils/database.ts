@@ -23,6 +23,7 @@ export async function connect() {
     await client.connect();
     console.log("Connected to database");
     await seed();
+    console.log("seeded database")
     process.on("SIGINT", exit);
   } catch (error) {
     console.error(error);
