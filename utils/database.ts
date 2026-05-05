@@ -25,14 +25,26 @@ export async function connect() {
 }
 
 export const gameDataCollection: Collection<Games> = client.db("GameHubData").collection<Games>("GameHubData");
-export async function getGames() {
-    return await gameDataCollection.find().toArray();
+export async function getGames(page: number, limit: number = 20) {
+    const skip = (page - 1) * limit;
+
+    return await gameDataCollection
+        .find()
+        .skip(skip)
+        .limit(limit)
+        .toArray();
 }
 
 async function seed() {
-    const response  = await fetch(`https://api.rawg.io/api/games?key=f261bf4dc1a84efeab97fb873bdedb9d&page=1`);
-    const data = await response.json();
+    await gameDataCollection.deleteMany({})
     if (await gameDataCollection.countDocuments() === 0) {
-        await gameDataCollection.insertMany(data.results);
+        for (let i = 1; i <= 5; i++) {
+            const response  = await fetch(`https://api.rawg.io/api/games?key=f261bf4dc1a84efeab97fb873bdedb9d&page=${i}`);
+            const data = await response.json();
+            
+            await gameDataCollection.insertMany(data.results);
+        }
+        console.log("seeded database");
     }
 }
+
