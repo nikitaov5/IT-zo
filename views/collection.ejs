@@ -3,13 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/css/output.css" rel="stylesheet" />    
+    <link href="/css/output.css" rel="stylesheet" />  
+    <script src="/scripts/collection/collection.js" defer></script>  
     <title>Collection</title>
   </head>
   <body class="w-full sm:text-left bg-slate-900 text-slate-100">
 <header
-      class="fixed top-0 right-0 left-0 bg-slate-200 text-slate-800 flex items-center gap-6 p-4"
-    >
+  class="fixed top-0 right-0 left-0 z-50 bg-slate-200 text-slate-800 flex items-center gap-6 p-4"
+>
       <nav class="flex gap-10">
         <a href="/home">
           <svg
@@ -88,25 +89,46 @@
   <section
     class="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
   >
-    <% if (games.length === 0) { %>
-      <p>Je collectie is leeg.</p>
-    <% } %>
-
     <% games.forEach(game => { %>
-      <article>
-        <figure class="border hover:border-indigo-500 transition">
-          <img
-            src="<%= game.background_image %>"
-            alt="<%= game.name %>"
-            class="w-full object-cover aspect-video"
-          />
+  <article>
+    <figure class="relative border rounded-2xl overflow-hidden hover:border-indigo-500 transition bg-slate-800">
 
-          <figcaption class="p-4 text-center">
-            <%= game.name %>
-          </figcaption>
-        </figure>
-      </article>
-    <% }) %>
+      <!-- DELETE BUTTON -->
+      <button
+      class="deleteBtn absolute top-3 right-3 z-10 bg-black/60 hover:bg-red-600 transition p-2 rounded-full"
+      data-id="<%= game.id %>"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-5 text-white"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18 18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+
+      <!-- GAME IMAGE -->
+      <img
+        src="<%= game.background_image %>"
+        alt="<%= game.name %>"
+        class="w-full object-cover aspect-video"
+      />
+
+      <!-- TITLE -->
+      <figcaption class="p-4 text-center font-medium">
+        <%= game.name %>
+      </figcaption>
+
+    </figure>
+  </article>
+<% }) %>
   </section>
 </main>
     <footer class="bg-neutral-primary-soft rounded-base ">

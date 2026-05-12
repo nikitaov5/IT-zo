@@ -1,12 +1,12 @@
 import { Collection, MongoClient } from "mongodb";
 
-
 import bcrypt from "bcrypt";
 import { User, Games } from "./database-interfaces";
-import { seedUsers, seed } from "./seed";
+import { seedDatabase } from "./seed";
 
-export const client = new MongoClient("mongodb+srv://matthiasmets_db_user:matthiasmets@webontwikkeling.rgcmiid.mongodb.net/?appName=WebOntwikkeling");
-
+export const client = new MongoClient(
+  "mongodb+srv://matthiasmets_db_user:matthiasmets@webontwikkeling.rgcmiid.mongodb.net/?appName=WebOntwikkeling",
+);
 
 async function exit() {
   try {
@@ -22,7 +22,7 @@ export async function connect() {
   try {
     await client.connect();
     console.log("Connected to database");
-    await seed();
+    await seedDatabase();
     process.on("SIGINT", exit);
   } catch (error) {
     console.error(error);
@@ -35,8 +35,6 @@ export const gameDataCollection: Collection<Games> = client
 export async function getGames(page: number) {
   return await gameDataCollection.find().toArray();
 }
-
-
 
 export async function createUser(email: string, password: string) {
   const existingUser = await userCollection.findOne({ email });
@@ -68,13 +66,10 @@ export async function loginUser(email: string, password: string) {
 export async function addGameToCollection(email: string, gameId: number) {
   return await userCollection.updateOne(
     { email },
-    { $addToSet: { collection: gameId } }
+    { $addToSet: { collection: gameId } },
   );
 }
 
 export const userCollection: Collection<User> = client
   .db("GameHubData")
   .collection<User>("userCollection");
-
-
-
