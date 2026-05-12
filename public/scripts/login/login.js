@@ -18,11 +18,9 @@ form.addEventListener("submit", async (e) => {
 
     const data = await response.json();
 
-    alertBox.classList.remove("hidden");
-
     if (response.ok) {
       alertBox.className =
-        "p-4 text-green-300 bg-green-900 border border-green-700 rounded";
+        "p-4 rounded text-sm bg-green-900 text-green-300 border border-green-700";
 
       alertBox.innerHTML = "Login gelukt!";
 
@@ -30,13 +28,11 @@ form.addEventListener("submit", async (e) => {
         window.location.href = "/home";
       }, 1000);
     } else {
-      throw new Error(data.message);
+      throw new Error(data.message || "Login mislukt");
     }
   } catch (error) {
-    alertBox.classList.remove("hidden");
-
     alertBox.className =
-      "p-4 text-red-300 bg-red-900 border border-red-700 rounded";
+      "p-4 rounded text-sm bg-red-900 text-red-300 border border-red-700";
 
     alertBox.innerHTML = error.message || "Login mislukt";
   }
