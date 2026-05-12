@@ -1,4 +1,5 @@
 const deleteButtons = document.querySelectorAll(".deleteBtn");
+const alertBox = document.getElementById("alertBox");
 
 deleteButtons.forEach((button) => {
   button.addEventListener("click", async () => {
@@ -10,7 +11,13 @@ deleteButtons.forEach((button) => {
       });
 
       if (response.ok) {
-        location.reload();
+        alertBox.classList.remove("hidden");
+
+        alertBox.innerHTML = "Game verwijderd uit collectie";
+
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
       }
     } catch (error) {
       console.log(error);

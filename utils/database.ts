@@ -48,6 +48,7 @@ export async function createUser(email: string, password: string) {
   return await userCollection.insertOne({
     email,
     password: hashedPassword,
+    collection: [],
   });
 }
 
