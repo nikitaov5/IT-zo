@@ -16,7 +16,7 @@ export async function seedDatabase() {
   await seedUsers();
 }
 
-export async function seedGames() {
+async function seedGames() {
   const count = await gameDataCollection.countDocuments();
 
   if (count === 0) {
@@ -31,7 +31,7 @@ export async function seedGames() {
   }
 }
 
-export async function seedUsers() {
+async function seedUsers() {
   if (process.env.NODE_ENV === "production") return;
 
   const users = [
@@ -43,9 +43,20 @@ export async function seedUsers() {
     {
       email: "admin@gmail.com",
       password: "admin",
-      collection: [3498, 4200, 3328],
+      collection: [3498, 12020, 3328],
     },
-  ];  for (const user of users) {
+    {
+      email: "nikita@gmail.com",
+      password: "nikita",
+      collection: [3498, 12020, 3328],
+    },
+    {
+      email: "manycol@gmail.com",
+      password: "admin",
+      collection: [3498, 12020, 3328, 11859, 13537, 5286, 28, 4062, 32, 58175],
+    },
+  ];
+  for (const user of users) {
     const exists = await userCollection.findOne({ email: user.email });
 
     if (!exists) {
@@ -60,5 +71,4 @@ export async function seedUsers() {
       console.log(`Seeded user: ${user.email}`);
     }
   }
-
 }

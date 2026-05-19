@@ -2,9 +2,17 @@ import express from "express";
 import ejs from "ejs";
 import path from "path";
 import { MongoClient } from "mongodb";
-import { connect, createUser, gameDataCollection, getGames, loginUser, userCollection } from "./utils/database";
+import {
+  connect,
+  createUser,
+  gameDataCollection,
+  getGames,
+  loginUser,
+  userCollection,
+} from "./utils/database";
 import indexRouter from "./routers/indexRoutes";
 import gameRoutes from "./routers/gameRoutes";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -13,6 +21,7 @@ app.set("view engine", "ejs");
 app.set("views", "./views");
 app.use(express.json());
 app.use(express.static("public"));
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.render("index");
@@ -21,12 +30,18 @@ app.get("/", (req, res) => {
 app.get("/home", async (req, res) => {
   const page = Number(req.query.page) || 1;
   const games = await getGames(page);
-  res.render("home", {games});
+  res.render("home", { games });
 });
 
 app.get("/collection", async (req, res) => {
+  const userEmail = req.cookies.userEmail;
+
+  if (!userEmail) {
+    return res.redirect("/login");
+  }
+
   const user = await userCollection.findOne({
-    email: "test@test.com",
+    email: userEmail,
   });
 
   if (!user || !user.collection) {
@@ -38,6 +53,29 @@ app.get("/collection", async (req, res) => {
     .toArray();
 
   res.render("collection", { games });
+});
+
+app.post("/collection/remove/:id", async (req, res) => {
+  const userEmail = req.cookies.userEmail;
+
+  if (!userEmail) {
+    return res.redirect("/login");
+  }
+
+  const gameId = Number(req.params.id);
+
+  await userCollection.updateOne(
+    { email: userEmail },
+    {
+      $pull: {
+        collection: gameId,
+      },
+    },
+  );
+
+  res.json({
+    success: true,
+  });
 });
 
 app.get("/compare", (req, res) => {
@@ -57,6 +95,12 @@ app.post("/login", async (req, res) => {
 
   try {
     const user = await loginUser(email, password);
+    res.cookie("userEmail", user.email, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 1000 * 60 * 60 * 24, // 1 dag
+    });
     res.json({ message: "Login success", user });
   } catch (error: any) {
     res.status(401).json({ message: error.message });

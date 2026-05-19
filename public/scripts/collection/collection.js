@@ -1,33 +1,26 @@
-let api = "https://api.rawg.io/api/games?key=f261bf4dc1a84efeab97fb873bdedb9d";
+const deleteButtons = document.querySelectorAll(".deleteBtn");
+const alertBox = document.getElementById("alertBox");
 
-loadCollection();
+deleteButtons.forEach((button) => {
+  button.addEventListener("click", async () => {
+    const gameId = button.dataset.id;
 
-async function loadCollection() {
-  try {
-    const response = await fetch(api);
+    try {
+      const response = await fetch(`/collection/remove/${gameId}`, {
+        method: "POST",
+      });
 
-    const data = await response.json();
-    const games = data.results;
+      if (response.ok) {
+        alertBox.classList.remove("hidden");
 
-    const articles = document.querySelectorAll("article");
+        alertBox.innerHTML = "Game verwijderd uit collectie";
 
-    articles.forEach((article, index) => {
-      if (games[index]) {
-        const game = games[index];
-        const figure = article.querySelector("figure");
-        const figcaption = article.querySelector("figcaption");
-        const img = document.createElement("img");
-
-        img.src = game.background_image;
-        img.alt = game.name;
-        img.className = "w-full object-cover aspect-video";
-
-        figcaption.textContent = game.name;
-
-        figure.insertBefore(img, figcaption);
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
       }
-    });
-  } catch (error) {
-    console.error("Failed to load games:", error);
-  }
-}
+    } catch (error) {
+      console.log(error);
+    }
+  });
+});
