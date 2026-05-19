@@ -2,7 +2,7 @@ import { Collection, MongoClient } from "mongodb";
 
 import bcrypt from "bcrypt";
 import { User, Games } from "./database-interfaces";
-import { seedDatabase } from "./seed";
+import { seedDatabase, seed } from "./seed";
 
 export const client = new MongoClient(
   "mongodb+srv://matthiasmets_db_user:matthiasmets@webontwikkeling.rgcmiid.mongodb.net/?appName=WebOntwikkeling",
@@ -24,7 +24,7 @@ export async function connect() {
     console.log("Connected to database");
     await seedDatabase();
     await seed();
-    console.log("seeded database")
+    console.log("seeded database");
     process.on("SIGINT", exit);
   } catch (error) {
     console.error(error);
