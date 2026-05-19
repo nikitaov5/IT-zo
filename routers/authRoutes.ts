@@ -8,8 +8,14 @@ router.get("/login", (req, res) => res.render("login"));
 router.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await loginUser(email, password);
 
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
+    }
+
+    const user = await loginUser(email, password);
     req.session.email = email;
     res.json({ message: "Login Success", user });
   } catch (err: any) {
@@ -22,6 +28,10 @@ router.get("/register", (req, res) => res.render("register"));
 router.post("/register", async (req, res, next) => {
   try {
     const { email, password, confirmPassword } = req.body;
+
+    if (!email || !password || !confirmPassword) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
 
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match!" });
