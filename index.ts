@@ -14,7 +14,7 @@ declare module "express-session" {
 
 const app = express();
 
-app.set("port", process.env.PORT ?? 3000);
+app.set("port", process.env.PORT ?? 1000);
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
