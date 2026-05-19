@@ -4,6 +4,32 @@ import { requireLogin } from "../middleware/requireLogin";
 
 const router = Router();
 
+router.get("/compare/random", requireLogin, async (req, res, next) => {
+  try {
+    const games = await gameDataCollection
+      .aggregate([{ $sample: { size: 2 } }])
+      .toArray();
+    res.json(games);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/compare/search", requireLogin, async (req, res, next) => {
+  try {
+    const query = req.query.q as string;
+    if (!query) return res.json([]);
+
+    const games = await gameDataCollection
+      .find({ name: { $regex: query, $options: "i" } })
+      .limit(10)
+      .toArray();
+    res.json(games);
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get("/games/:id", requireLogin, async (req, res, next) => {
   try {
     const game = await gameDataCollection.findOne({

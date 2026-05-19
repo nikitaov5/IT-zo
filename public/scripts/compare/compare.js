@@ -1,44 +1,108 @@
 "use strict";
 
-const API_KEY = "f261bf4dc1a84efeab97fb873bdedb9d";
-
-function fillCard(game, id) {
-  document.getElementById(id.img).src = game.background_image;
-  document.getElementById(id.name).textContent = game.name;
-  document.getElementById(id.genre).textContent =
+function fillCard(game, ids) {
+  document.getElementById(ids.img).src = game.background_image;
+  document.getElementById(ids.name).textContent = game.name;
+  document.getElementById(ids.genre).textContent =
     "Genre: " + game.genres.map((g) => g.name).join(", ");
-  document.getElementById(id.release).textContent =
+  document.getElementById(ids.release).textContent =
     "Release Datum: " + game.released;
-  document.getElementById(id.platform).textContent =
-    "Platform: " + game.parent_platforms.map((p) => p.platform.name).join(", ");
-  document.getElementById(id.rating).textContent = "Rating: " + game.rating;
+  document.getElementById(ids.platform).textContent =
+    "Platform: " + game.platforms.map((p) => p.platform.name).join(", ");
+  document.getElementById(ids.rating).textContent = "Rating: " + game.rating;
 }
 
-async function fetchGame() {
-  const randomGamePK = Math.floor(Math.random() * 20) + 1;
+async function fetchRandomGames() {
+  try {
+    const res = await fetch("/compare/random");
 
-  // fetch voor game
-  const response = await fetch(
-    `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-rating&page=${randomGamePK}&page_size=5`,
-  );
+    if (!res.ok) {
+      console.error("Route failed with status:", res.status);
+      return;
+    }
 
-  const gamesData = await response.json();
+    const games = await res.json();
+    console.log("Games received:", games);
 
-  if (!gamesData.results || gamesData.results.length === 0) {
-    fetchGame();
-    return;
+    fillCard(games[0], {
+      img: "gameImg",
+      name: "gameName",
+      genre: "gameGenre",
+      release: "gameRelease",
+      platform: "gamePlatform",
+      rating: "gameRating",
+    });
+
+    fillCard(games[1], {
+      img: "gameImg2",
+      name: "gameName2",
+      genre: "gameGenre2",
+      release: "gameRelease2",
+      platform: "gamePlatform2",
+      rating: "gameRating2",
+    });
+  } catch (err) {
+    console.error("fetchRandomGames error:", err);
   }
+}
 
-  const randomIndex1 = Math.floor(Math.random() * gamesData.results.length);
-  let randomIndex2 = Math.floor(Math.random() * gamesData.results.length);
-  while (randomIndex2 === randomIndex1) {
-    randomIndex2 = Math.floor(Math.random() * gamesData.results.length);
-  }
+function setupSearch(inputId, dropdownId, cardIds) {
+  const input = document.getElementById(inputId);
+  const dropdown = document.getElementById(dropdownId);
 
-  const randomGame1 = gamesData.results[randomIndex1];
-  const randomGame2 = gamesData.results[randomIndex2];
+  input.addEventListener("input", async () => {
+    const query = input.value.trim();
 
-  fillCard(randomGame1, {
+    if (!query) {
+      dropdown.classList.add("hidden");
+      dropdown.innerHTML = "";
+      return;
+    }
+
+    try {
+      const res = await fetch(`/compare/search?q=${encodeURIComponent(query)}`);
+      const games = await res.json();
+
+      dropdown.innerHTML = "";
+
+      if (games.length === 0) {
+        dropdown.innerHTML = `<li class="px-4 py-2 text-slate-400 text-sm">Geen resultaten</li>`;
+        dropdown.classList.remove("hidden");
+        return;
+      }
+
+      games.forEach((game) => {
+        const li = document.createElement("li");
+        li.textContent = game.name;
+        li.className =
+          "px-4 py-2 text-sm text-slate-100 hover:bg-slate-700 cursor-pointer";
+
+        li.addEventListener("click", () => {
+          fillCard(game, cardIds);
+          input.value = game.name;
+          dropdown.classList.add("hidden");
+        });
+
+        dropdown.appendChild(li);
+      });
+
+      dropdown.classList.remove("hidden");
+    } catch (err) {
+      console.error("Search error:", err);
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.classList.add("hidden");
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  fetchRandomGames();
+
+  setupSearch("searchInput1", "dropdown1", {
     img: "gameImg",
     name: "gameName",
     genre: "gameGenre",
@@ -47,7 +111,7 @@ async function fetchGame() {
     rating: "gameRating",
   });
 
-  fillCard(randomGame2, {
+  setupSearch("searchInput2", "dropdown2", {
     img: "gameImg2",
     name: "gameName2",
     genre: "gameGenre2",
@@ -55,8 +119,4 @@ async function fetchGame() {
     platform: "gamePlatform2",
     rating: "gameRating2",
   });
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  fetchGame();
 });

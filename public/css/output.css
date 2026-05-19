@@ -721,6 +721,10 @@ video {
   height: 100vh;
 }
 
+.max-h-60 {
+  max-height: 15rem;
+}
+
 .min-h-screen {
   min-height: 100vh;
 }
@@ -823,6 +827,10 @@ video {
 
 .overflow-hidden {
   overflow: hidden;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
 }
 
 .rounded {
