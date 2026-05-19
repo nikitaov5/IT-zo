@@ -30,9 +30,16 @@ export async function connect() {
   try {
     await client.connect();
     console.log("Connected to database");
+
+    await gameDataCollection.createIndex({
+      name: "text",
+    });
+
     await seedDatabase();
     await seed();
+
     console.log("seeded database");
+
     process.on("SIGINT", exit);
   } catch (error) {
     console.error(error);
