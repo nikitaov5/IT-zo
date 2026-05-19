@@ -4,6 +4,7 @@ import {
   userCollection,
   gameDataCollection,
 } from "../utils/database";
+import { requireLogin } from "../middleware/requireLogin";
 
 const router = Router();
 
@@ -14,11 +15,11 @@ declare module "express-session" {
 }
 
 router.get("/", (req, res) => res.render("index"));
-router.get("/compare", (req, res) => res.render("compare"));
-router.get("/gtg", (req, res) => res.render("gtg"));
+router.get("/compare", requireLogin, (req, res) => res.render("compare"));
+router.get("/gtg", requireLogin, (req, res) => res.render("gtg"));
 router.get("/unavailable", (req, res) => res.render("unavailable"));
 
-router.get("/home", async (req, res, next) => {
+router.get("/home", requireLogin, async (req, res, next) => {
   try {
     const page = Math.max(1, Number(req.query.page) || 1);
     const games = await getGames(page);
@@ -28,7 +29,7 @@ router.get("/home", async (req, res, next) => {
   }
 });
 
-router.get("/collection", async (req, res, next) => {
+router.get("/collection", requireLogin, async (req, res, next) => {
   try {
     const email = req.session.email;
 
@@ -54,12 +55,8 @@ router.get("/collection", async (req, res, next) => {
   }
 });
 
-router.post("/collection/remove/:id", async (req, res) => {
+router.post("/collection/remove/:id", requireLogin, async (req, res) => {
   const userEmail = req.session.email;
-
-  if (!userEmail) {
-    return res.redirect("/login");
-  }
 
   const gameId = Number(req.params.id);
 
@@ -77,14 +74,10 @@ router.post("/collection/remove/:id", async (req, res) => {
   });
 });
 
-router.post("/collection/add", async (req, res, next) => {
+router.post("/collection/add", requireLogin, async (req, res, next) => {
   try {
     const { gameId } = req.body;
     const email = req.session.email;
-
-    if (!email) {
-      return res.status(401).json({ error: "Niet ingelogd" });
-    }
 
     await userCollection.updateOne(
       { email },

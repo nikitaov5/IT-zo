@@ -5,6 +5,7 @@ import { connect } from "./utils/database";
 import indexRouter from "./routers/indexRoutes";
 import gameRoutes from "./routers/gameRoutes";
 import authRouter from "./routers/authRoutes";
+import { requireLogin } from "./middleware/requireLogin";
 
 declare module "express-session" {
   interface SessionData {

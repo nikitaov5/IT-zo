@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { gameDataCollection } from "../utils/database";
+import { requireLogin } from "../middleware/requireLogin";
 
 const router = Router();
 
-router.get("/games/:id", async (req, res, next) => {
+router.get("/games/:id", requireLogin, async (req, res, next) => {
   try {
     const game = await gameDataCollection.findOne({
       id: Number(req.params.id),
