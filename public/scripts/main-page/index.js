@@ -32,7 +32,7 @@ function loadGames(page) {
                 const img = document.createElement("img");
                 img.src = game.background_image;
                 img.className =
-                    "w-full aspect-video object-cover border border-gray-500 ";
+                    "w-full aspect-video object-cover ";
                 const title = document.createElement("div");
                 title.className = "p-2 text-center font-bold";
                 title.textContent = game.name;

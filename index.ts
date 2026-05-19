@@ -1,8 +1,5 @@
 import express, { NextFunction } from "express";
 import session from "express-session";
-import ejs from "ejs";
-import path from "path";
-import { MongoClient } from "mongodb";
 import {
   connect,
   createUser,
@@ -14,7 +11,6 @@ import {
 import indexRouter from "./routers/indexRoutes";
 import gameRoutes from "./routers/gameRoutes";
 import authRouter from "./routers/authRoutes";
-import cookieParser from "cookie-parser";
 
 const app = express();
 

@@ -22,13 +22,31 @@ export async function connect() {
   try {
     await client.connect();
     console.log("Connected to database");
+
+    await gameDataCollection.createIndex({
+      name: "text",
+    });
+
     await seedDatabase();
     await seed();
+
     console.log("seeded database");
+
     process.on("SIGINT", exit);
   } catch (error) {
     console.error(error);
   }
+}
+
+
+export async function searchGames(search: string) {
+  return await gameDataCollection
+    .find({
+      $text: {
+        $search: search,
+      },
+    })
+    .toArray();
 }
 
 export const gameDataCollection: Collection<Games> = client
