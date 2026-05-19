@@ -1,5 +1,7 @@
-import express, { NextFunction } from "express";
+import "dotenv/config";
+import express, { ErrorRequestHandler } from "express";
 import session from "express-session";
+<<<<<<< HEAD
 import {
   connect,
   createUser,
@@ -11,6 +13,18 @@ import {
 import indexRouter from "./routers/indexRoutes";
 import gameRoutes from "./routers/gameRoutes";
 import authRouter from "./routers/authRoutes";
+=======
+import { connect } from "./utils/database";
+import indexRouter from "./routers/indexRoutes";
+import gameRoutes from "./routers/gameRoutes";
+import authRouter from "./routers/authRoutes";
+
+declare module "express-session" {
+  interface SessionData {
+    email?: string;
+  }
+}
+>>>>>>> a52cda706a8a2461e8acb0add0576871947b2e7e
 
 const app = express();
 
@@ -25,6 +39,11 @@ app.use(
     secret: process.env.SESSION_SECRET ?? "secret",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      sameSite: "strict",
+    },
   }),
 );
 
@@ -32,10 +51,11 @@ app.use("/", indexRouter);
 app.use("/", gameRoutes);
 app.use("/", authRouter);
 
-// app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-//   console.error(err);
-//   res.status(500).json({ message: "Internal server error" });
-// });
+const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
+  console.error(err);
+  res.status(500).json({ message: "Internal server error" });
+};
+app.use(errorHandler);
 
 (async () => {
   try {
