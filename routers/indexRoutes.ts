@@ -54,6 +54,29 @@ router.get("/collection", async (req, res, next) => {
   }
 });
 
+router.post("/collection/remove/:id", async (req, res) => {
+  const userEmail = req.session.email;
+
+  if (!userEmail) {
+    return res.redirect("/login");
+  }
+
+  const gameId = Number(req.params.id);
+
+  await userCollection.updateOne(
+    { email: userEmail },
+    {
+      $pull: {
+        collection: gameId,
+      },
+    },
+  );
+
+  res.json({
+    success: true,
+  });
+});
+
 router.post("/collection/add", async (req, res, next) => {
   try {
     const { gameId } = req.body;
