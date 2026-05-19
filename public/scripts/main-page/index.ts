@@ -45,31 +45,22 @@ function renderGames(games: Games[]) {
     gameDiv.addEventListener("click", () => {
       document.getElementById("gameName")!.textContent = game.name;
 
-      (
-        document.getElementById("gameImage") as HTMLImageElement
-      ).src = game.background_image;
+      (document.getElementById("gameImage") as HTMLImageElement).src =
+        game.background_image;
 
-      document.getElementById(
-        "gameRelease"
-      )!.textContent = `Released: ${game.released}`;
+      document.getElementById("gameRelease")!.textContent =
+        `Released: ${game.released}`;
 
-      document.getElementById(
-        "gamePlaytime"
-      )!.textContent = `Average Playtime: ${game.playtime} uur`;
+      document.getElementById("gamePlaytime")!.textContent =
+        `Average Playtime: ${game.playtime} uur`;
 
-      document.getElementById(
-        "gameRating"
-      )!.textContent = `Rating: ${game.rating}/5`;
+      document.getElementById("gameRating")!.textContent =
+        `Rating: ${game.rating}/5`;
 
-      document.getElementById(
-        "gamePlatform"
-      )!.textContent = `Platforms: ${game.platforms
-        .map((p) => p.platform.name)
-        .join(", ")}`;
+      document.getElementById("gamePlatform")!.textContent =
+        `Platforms: ${game.platforms.map((p) => p.platform.name).join(", ")}`;
 
-      document.getElementById(
-        "gameGenre"
-      )!.textContent = `Genres: ${game.genres
+      document.getElementById("gameGenre")!.textContent = `Genres: ${game.genres
         .map((g) => g.name)
         .join(", ")}`;
     });
@@ -79,7 +70,7 @@ function renderGames(games: Games[]) {
 }
 
 const searchInput = document.getElementById(
-  "searchInput"
+  "searchInput",
 ) as HTMLInputElement | null;
 
 const gamesGrid = document.getElementById("gamesGrid");
@@ -94,9 +85,7 @@ searchInput?.addEventListener("input", async () => {
   }
 
   try {
-    const response = await fetch(
-      `/search?q=${encodeURIComponent(query)}`
-    );
+    const response = await fetch(`/search?q=${encodeURIComponent(query)}`);
 
     const games = await response.json();
 
@@ -131,23 +120,19 @@ searchInput?.addEventListener("input", async () => {
   }
 });
 
-
 document.getElementById("nextPage")?.addEventListener("click", () => {
   currentPage++;
   loadGames();
-  document.getElementById("pageNumber")!.textContent =
-    currentPage.toString();
+  document.getElementById("pageNumber")!.textContent = currentPage.toString();
 });
 
 document.getElementById("prevPage")?.addEventListener("click", () => {
   if (currentPage > 1) {
     currentPage--;
     loadGames();
-    document.getElementById("pageNumber")!.textContent =
-      currentPage.toString();
+    document.getElementById("pageNumber")!.textContent = currentPage.toString();
   }
 });
-
 
 window.addEventListener("DOMContentLoaded", () => {
   loadGames();
