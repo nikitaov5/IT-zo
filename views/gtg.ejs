@@ -82,12 +82,18 @@
         <!-- Foto hier injecteren -->
       </section>
 
-      <input
-        id="guess-input"
-        type="text"
-        placeholder="Welke game is het? Druk enter om een poging te wagen!"
-        class="w-full bg-gray-100 text-black placeholder-gray-400 rounded-full px-5 py-3 outline-none border border-gray-200 focus:border-blue-400 transition"
-      />
+      <div class="relative w-full">
+        <input
+          id="guess-input"
+          type="text"
+          placeholder="Welke game is het? Typ om te zoeken!"
+          class="w-full bg-gray-100 text-black placeholder-gray-400 rounded-full px-5 py-3 outline-none border border-gray-200 focus:border-blue-400 transition"
+          autocomplete="off"
+        />
+          <ul id="guess-dropdown" class="absolute z-10 w-full bg-white border border-gray-200 rounded-2xl mt-1 hidden max-h-60 overflow-y-auto shadow-lg">
+
+          </ul>
+      </div>
 
       <!-- Score -->
       <div

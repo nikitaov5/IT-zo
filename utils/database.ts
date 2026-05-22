@@ -2,7 +2,7 @@
 import { Collection, MongoClient } from "mongodb";
 import bcrypt from "bcrypt";
 import { User, Games } from "./database-interfaces";
-import { seedDatabase, seed } from "./seed";
+import { seedDatabase } from "./seed";
 
 const uri = process.env.MONGO_URI;
 if (!uri) throw new Error("MONGO_URI is not defined in .env");
@@ -36,7 +36,6 @@ export async function connect() {
     });
 
     await seedDatabase();
-    await seed();
 
     console.log("seeded database");
 

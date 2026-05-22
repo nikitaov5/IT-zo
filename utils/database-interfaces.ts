@@ -4,6 +4,11 @@ export interface User {
   collection?: number[]; // game IDs
 }
 
+export interface Screenshot {
+  id: number;
+  image: string;
+}
+
 export interface Games {
   id: number;
   name: string;
@@ -23,4 +28,6 @@ export interface Games {
     id: number;
     name: string;
   }[];
+
+  screenshots: Screenshot[];
 }
