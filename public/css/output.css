@@ -1657,6 +1657,10 @@ video {
     margin-top: 1rem;
   }
 
+  .sm\:flex {
+    display: flex;
+  }
+
   .sm\:h-36 {
     height: 9rem;
   }
