@@ -94,21 +94,24 @@
 
       <div class="ml-auto flex items-center gap-4">
 
-  <% if (currentGame) { %>
-    <div class="hidden sm:flex items-center gap-2">
-      <img
-        src="<%= currentGame.background_image %>"
-        class="w-8 h-8 rounded object-cover border border-slate-400"
-        alt="<%= currentGame.name %>"
-      />
+  <div
+  id="currentGame"
+  class="<%= currentGame ? 'hidden sm:flex items-center gap-2' : 'hidden' %>"
+>
+  <img
+    id="currentGameImage"
+    src="<%= currentGame?.background_image || '' %>"
+    class="w-8 h-8 rounded object-cover border border-slate-400"
+    alt="<%= currentGame?.name || 'Current Game' %>"
+  />
 
-      <span
-        class="text-sm font-semibold text-slate-800 truncate max-w-32"
-      >
-        <%= currentGame.name %>
-      </span>
-    </div>
-  <% } %>
+  <span
+    id="currentGameName"
+    class="text-sm font-semibold text-slate-800 truncate max-w-32"
+  >
+    <%= currentGame?.name || '' %>
+  </span>
+</div>
 
     <div class="relative w-64">
       <input type="text" id="searchInput" placeholder="Zoek een game..." class="w-full rounded-full bg-slate-100 border border-slate-300 px-4 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:bg-white transition text-slate-800 placeholder-slate-400" />
