@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { gameDataCollection } from "../utils/database";
+import { gameDataCollection, userCollection } from "../utils/database";
 import { requireLogin } from "../middleware/requireLogin";
 
 const router = Router();
@@ -27,6 +27,28 @@ router.get("/compare/search", requireLogin, async (req, res, next) => {
     res.json(games);
   } catch (err) {
     next(err);
+  }
+});
+
+router.get("/gtg/score", requireLogin, async (req, res, next) => {
+  try {
+    const user = await userCollection.findOne({ email: req.session.email });
+    res.json({ score: user?.gtgScore ?? 0 });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/gtg/score", requireLogin, async (req, res, next) => {
+  try {
+    const { score } = req.body;
+    await userCollection.updateOne(
+      { email: req.session.email },
+      { $set: { gtgScore: score } },
+    );
+    res.json({ success: true });
+  } catch (error) {
+    next(error);
   }
 });
 

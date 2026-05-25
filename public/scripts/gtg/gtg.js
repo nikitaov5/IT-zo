@@ -8,10 +8,27 @@ let scoreEl;
 let flameIcon;
 let dropdown;
 
+async function loadScore() {
+  const res = await fetch("/gtg/score");
+  const data = await res.json();
+  score = data.score;
+  scoreEl.textContent = score;
+  flameIcon.classList.toggle("hidden", score === 0);
+}
+
+async function saveScore(newScore) {
+  await fetch("/gtg/score", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ score: newScore }),
+  });
+}
+
 function updateScore(newScore) {
   score = newScore;
   scoreEl.textContent = score;
   flameIcon.classList.toggle("hidden", score === 0);
+  saveScore(newScore);
 }
 
 async function fetchRandomGame() {
@@ -29,18 +46,35 @@ async function fetchRandomGame() {
   const img = document.createElement("img");
   img.src = imageSrc;
   img.style.cssText =
-    "width:100%; height:100%; object-fit:cover; border-radius:10px;";
+    "width:100%; height:100%; object-fit:cover; border-radius:10px; filter: blur(4px); transition: filter 0.8s ease;";
 
   const gameSection = document.getElementById("game");
   gameSection.innerHTML = "";
   gameSection.appendChild(img);
+
+  const feedback = document.getElementById("feedback");
+  feedback.classList.add("hidden");
+  feedback.textContent = "";
 }
 
 function checkGuess(selectedName) {
+  const feedback = document.getElementById("feedback");
+  const img = document.querySelector("#game img");
+
   if (selectedName.toLowerCase() === currentGameName) {
+    if (img) img.style.filter = "blur(0px)";
+    feedback.textContent = "Correct!";
+    feedback.className = "text-center text-lg font-bold text-green-400";
+    feedback.classList.remove("hidden");
     updateScore(score + 1);
-    fetchRandomGame();
+
+    setTimeout(() => {
+      fetchRandomGame();
+    }, 1500);
   } else {
+    feedback.textContent = "Fout, probeer opnieuw!";
+    feedback.className = "text-center text-lg font-bold text-red-400";
+    feedback.classList.remove("hidden");
     updateScore(0);
   }
 
@@ -55,7 +89,13 @@ document.addEventListener("DOMContentLoaded", () => {
   flameIcon = document.getElementById("flame");
   dropdown = document.getElementById("guess-dropdown");
 
+  loadScore();
   fetchRandomGame();
+
+  document.getElementById("skip-btn").addEventListener("click", () => {
+    updateScore(0);
+    fetchRandomGame();
+  });
 
   input.addEventListener("input", async () => {
     const query = input.value.trim();
