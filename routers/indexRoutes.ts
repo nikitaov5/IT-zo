@@ -84,6 +84,7 @@ router.post("/home/current-game", requireLogin, async (req, res, next) => {
 router.get("/collection", requireLogin, async (req, res, next) => {
   try {
     const email = req.session.email;
+    const sort = req.query.sort;
 
     if (!email) {
       return res.redirect("/login");
@@ -92,16 +93,40 @@ router.get("/collection", requireLogin, async (req, res, next) => {
     const user = await userCollection.findOne({ email });
 
     if (!user?.collection?.length) {
-      return res.render("collection", { games: [] });
+      return res.render("collection", { games: [], sort });
+    }
+
+    let sortOption = {};
+
+    switch (sort) {
+      case "rating":
+        sortOption = { rating: -1 };
+        break;
+
+      case "ratingAsc":
+        sortOption = { rating: 1 };
+        break;
+
+      case "name":
+        sortOption = { name: 1 };
+        break;
+
+      case "released":
+        sortOption = { released: -1 };
+        break;
+
+      default:
+        sortOption = {};
     }
 
     const games = await gameDataCollection
       .find({
         id: { $in: user.collection.map(Number) },
       })
+      .sort(sortOption)
       .toArray();
 
-    res.render("collection", { games });
+    res.render("collection", { games, sort });
   } catch (err) {
     next(err);
   }

@@ -82,6 +82,11 @@ async function seedUsers() {
       password: "admin",
       collection: [3498, 12020, 3328, 11859, 13537, 5286, 28, 4062, 32, 58175],
     },
+    {
+      email: "biguser@gmail.com",
+      password: "admin",
+      collection: [3498, 12020, 3328, 11859, 13537, 5286, 28, 4062, 32, 58175],
+    },
   ];
   for (const user of users) {
     const exists = await userCollection.findOne({ email: user.email });
