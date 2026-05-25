@@ -22,12 +22,35 @@ router.get("/unavailable", (req, res) => res.render("unavailable"));
 router.get("/home", requireLogin, async (req, res, next) => {
   try {
     const page = Math.max(1, Number(req.query.page) || 1);
+    console.log("PAGE:", page);
     const games = await getGames(page);
+
+    if (req.xhr || (req.headers.accept && req.headers.accept.includes("application/json"))) {
+      return res.json(games);
+    }
     res.render("home", { games });
   } catch (err) {
     console.log(err);
   }
 });
+
+router.get("/home/search", requireLogin, async (req, res, next) => {
+  try {
+    const query = req.query.q as string;
+    if (!query) return res.json([]);
+
+    const games = await gameDataCollection
+      .find({ name: { $regex: query, $options: "i" } })
+      .limit(24)
+      .toArray();
+
+    res.json(games);
+  } catch (err) {
+    next(err);
+  }
+});
+
+
 
 router.get("/collection", requireLogin, async (req, res, next) => {
   try {
