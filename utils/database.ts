@@ -1,8 +1,7 @@
-// database.ts
 import { Collection, MongoClient } from "mongodb";
 import bcrypt from "bcrypt";
 import { User, Games } from "./database-interfaces";
-import { seedDatabase, seed } from "./seed";
+import { seedDatabase } from "./seed";
 
 const uri = process.env.MONGO_URI;
 if (!uri) throw new Error("MONGO_URI is not defined in .env");
@@ -36,7 +35,6 @@ export async function connect() {
     });
 
     await seedDatabase();
-    await seed();
 
     console.log("seeded database");
 
@@ -49,6 +47,7 @@ export async function connect() {
 export async function getGames(page: number) {
   const limit = 24;
   const skip = (page - 1) * limit;
+  console.log("skip:", skip, "limit:", limit);
   return await gameDataCollection.find().skip(skip).limit(limit).toArray();
 }
 

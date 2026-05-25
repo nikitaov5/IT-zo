@@ -1,13 +1,18 @@
 import { gameDataCollection, userCollection } from "./database";
 import bcrypt from "bcrypt";
 
-export async function seed() {
-  const response = await fetch(
-    `https://api.rawg.io/api/games?key=f261bf4dc1a84efeab97fb873bdedb9d&page=1`,
-  );
-  const data = await response.json();
-  if ((await gameDataCollection.countDocuments()) === 0) {
-    await gameDataCollection.insertMany(data.results);
+const API_KEY = process.env.RAWG_API_KEY;
+
+async function fetchScreenshots(gameId: number) {
+  try {
+    const res = await fetch(
+      `https://api.rawg.io/api/games/${gameId}/screenshots?key=${API_KEY}`,
+    );
+    const data = await res.json();
+    return data.results ?? [];
+  } catch (error) {
+    console.error(`Failed to fetch screenshots for game ${gameId}:`, error);
+    return [];
   }
 }
 
@@ -19,16 +24,38 @@ export async function seedDatabase() {
 async function seedGames() {
   const count = await gameDataCollection.countDocuments();
 
-  if (count === 0) {
-    const response = await fetch(
-      `https://api.rawg.io/api/games?key=f261bf4dc1a84efeab97fb873bdedb9d&page=1`,
-    );
-
-    const data = await response.json();
-    await gameDataCollection.insertMany(data.results);
-
-    console.log("Seeded games");
+  if (count > 0) {
+    console.log("Games zijn al geseed, skip.");
+    return;
   }
+
+  console.log("Games worden geseed...");
+
+  const MAX_GAMES = 240;
+  const allGames: any[] = [];
+  const RAWG_API_KEY = process.env.RAWG_API_KEY;
+  let url = `https://api.rawg.io/api/games?key=${RAWG_API_KEY}&ordering=release&page_size=20`
+
+  while (url && allGames.length < MAX_GAMES) {
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.results) {
+      allGames.push(...data.results);
+      console.log(`Geladen: ${allGames.length} games...`);
+    }
+    url = data.next ?? null; //als er geen volgende pagina is
+  }
+
+  const gamesWithScreenshots = await Promise.all(
+    allGames.map(async (game) => {
+      const screenshots = await fetchScreenshots(game.id);
+      return { ...game, screenshots };
+    }),
+  );
+
+  await gameDataCollection.insertMany(gamesWithScreenshots);
+  console.log(`Seeded ${gamesWithScreenshots.length} games with screenshots`);
 }
 
 async function seedUsers() {

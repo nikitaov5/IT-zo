@@ -1,81 +1,141 @@
 "use strict";
 
-const API_KEY = "f261bf4dc1a84efeab97fb873bdedb9d";
-
-// Game functionaliteit
 let score = 0;
 let currentGameName = "";
 
-async function fetchScreenshots() {
-  const randomGamePK = Math.floor(Math.random() * 2) + 1;
+let input;
+let scoreEl;
+let flameIcon;
+let dropdown;
 
-  // fetch voor game
-  const response = await fetch(
-    `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-rating&page=${randomGamePK}&page_size=20`,
-  );
-
-  const gamesData = await response.json();
-
-  if (!gamesData.results || gamesData.results.length === 0) {
-    fetchScreenshots();
-    return;
-  }
-
-  const randomGame =
-    gamesData.results[Math.floor(Math.random() * gamesData.results.length)];
-
-  currentGameName = randomGame.name.toLowerCase();
-
-  // fetch voor screenshots
-  const ssResponse = await fetch(
-    `https://api.rawg.io/api/games/${randomGame.id}/screenshots?key=${API_KEY}`,
-  );
-  const ssData = await ssResponse.json();
-
-  if (!ssData.results || ssData.results.length === 0) {
-    fetchScreenshots();
-    return;
-  }
-
-  const randomSs =
-    ssData.results[Math.floor(Math.random() * ssData.results.length)];
-
-  const img = document.createElement("img");
-  img.src = randomSs.image;
-  img.style.cssText =
-    "width:100%; height:100%; object-fit:cover; border-radius: 10px;";
-
-  const gameSection = document.getElementById("game");
-  gameSection.innerHTML = "";
-  gameSection.insertAdjacentElement("beforeend", img);
+async function loadScore() {
+  const res = await fetch("/gtg/score");
+  const data = await res.json();
+  score = data.score;
+  scoreEl.textContent = score;
+  flameIcon.classList.toggle("hidden", score === 0);
 }
 
-const input = document.getElementById("guess-input");
-const scoreEl = document.getElementById("score");
-const flameIcon = document.getElementById("flame");
+async function saveScore(newScore) {
+  await fetch("/gtg/score", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ score: newScore }),
+  });
+}
 
 function updateScore(newScore) {
   score = newScore;
   scoreEl.textContent = score;
   flameIcon.classList.toggle("hidden", score === 0);
+  saveScore(newScore);
+}
+
+async function fetchRandomGame() {
+  const res = await fetch("/gtg/random");
+  const game = await res.json();
+
+  currentGameName = game.name.toLowerCase();
+
+  const screenshots = game.screenshots ?? [];
+  const imageSrc =
+    screenshots.length > 0
+      ? screenshots[Math.floor(Math.random() * screenshots.length)].image
+      : game.background_image;
+
+  const img = document.createElement("img");
+  img.src = imageSrc;
+  img.style.cssText =
+    "width:100%; height:100%; object-fit:cover; border-radius:10px; filter: blur(4px); transition: filter 0.8s ease;";
+
+  const gameSection = document.getElementById("game");
+  gameSection.innerHTML = "";
+  gameSection.appendChild(img);
+
+  const feedback = document.getElementById("feedback");
+  feedback.classList.add("hidden");
+  feedback.textContent = "";
+}
+
+function checkGuess(selectedName) {
+  const feedback = document.getElementById("feedback");
+  const img = document.querySelector("#game img");
+
+  if (selectedName.toLowerCase() === currentGameName) {
+    if (img) img.style.filter = "blur(0px)";
+    feedback.textContent = "Correct!";
+    feedback.className = "text-center text-lg font-bold text-green-400";
+    feedback.classList.remove("hidden");
+    updateScore(score + 1);
+
+    setTimeout(() => {
+      fetchRandomGame();
+    }, 1500);
+  } else {
+    feedback.textContent = "Fout, probeer opnieuw!";
+    feedback.className = "text-center text-lg font-bold text-red-400";
+    feedback.classList.remove("hidden");
+    updateScore(0);
+  }
+
+  input.value = "";
+  dropdown.innerHTML = "";
+  dropdown.classList.add("hidden");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  fetchScreenshots();
+  input = document.getElementById("guess-input");
+  scoreEl = document.getElementById("score");
+  flameIcon = document.getElementById("flame");
+  dropdown = document.getElementById("guess-dropdown");
 
-  input.addEventListener("keyup", function (e) {
-    if (e.key !== "Enter") return;
+  loadScore();
+  fetchRandomGame();
 
-    const guess = input.value.trim().toLowerCase();
+  document.getElementById("skip-btn").addEventListener("click", () => {
+    updateScore(0);
+    fetchRandomGame();
+  });
 
-    if (guess === "juistegame") {
-      updateScore(score + 1);
-      input.value = "";
-      fetchScreenshots();
-    } else {
-      updateScore(0);
-      scoreEl.textContent = score;
-      input.value = "";
+  input.addEventListener("input", async () => {
+    const query = input.value.trim();
+
+    if (!query) {
+      dropdown.classList.add("hidden");
+      dropdown.innerHTML = "";
+      return;
+    }
+
+    const res = await fetch(`/gtg/search?q=${encodeURIComponent(query)}`);
+    const games = await res.json();
+
+    dropdown.innerHTML = "";
+
+    if (games.length === 0) {
+      dropdown.innerHTML = `<li class="px-5 py-2 text-gray-400 text-sm">Geen resultaten</li>`;
+      dropdown.classList.remove("hidden");
+      return;
+    }
+
+    games.forEach((game) => {
+      const li = document.createElement("li");
+      li.textContent = game.name;
+      li.className =
+        "px-5 py-2 text-sm text-black hover:bg-gray-100 cursor-pointer";
+
+      li.addEventListener("click", () => {
+        checkGuess(game.name);
+      });
+
+      dropdown.appendChild(li);
+    });
+
+    dropdown.classList.remove("hidden");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.classList.add("hidden");
     }
   });
 });

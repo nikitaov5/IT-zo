@@ -22,12 +22,64 @@ router.get("/unavailable", (req, res) => res.render("unavailable"));
 router.get("/home", requireLogin, async (req, res, next) => {
   try {
     const page = Math.max(1, Number(req.query.page) || 1);
+    console.log("PAGE:", page);
     const games = await getGames(page);
+
+    if (req.xhr || (req.headers.accept && req.headers.accept.includes("application/json"))) {
+      return res.json(games);
+    }
     res.render("home", { games });
   } catch (err) {
     console.log(err);
   }
 });
+
+router.get("/home/search", requireLogin, async (req, res, next) => {
+  try {
+    const query = req.query.q as string;
+    if (!query) return res.json([]);
+
+    const games = await gameDataCollection
+      .find({ name: { $regex: query, $options: "i" } })
+      .limit(24)
+      .toArray();
+
+    res.json(games);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/home/current-game", requireLogin, async (req, res, next) => {
+  try {
+    const email = req.session.email;
+    const user = await userCollection.findOne({ email });
+
+    if (!user?.currentGame) return res.json(null);
+
+    const game = await gameDataCollection.findOne({ id: user.currentGame });
+    res.json(game);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/home/current-game", requireLogin, async (req, res, next) => {
+  try {
+    const { gameId } = req.body;
+    const email = req.session.email;
+
+    await userCollection.updateOne(
+      { email },
+      { $set: { currentGame: gameId } }
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    next(err);
+  }
+});
+
 
 router.get("/collection", requireLogin, async (req, res, next) => {
   try {

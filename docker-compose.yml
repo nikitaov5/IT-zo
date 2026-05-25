@@ -1,0 +1,11 @@
+services:
+  app:
+    container_name: it-zo-app
+    build: .
+    ports:
+      - "1000:1000"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - /app/node_modules
