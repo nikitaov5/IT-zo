@@ -4,8 +4,9 @@ module.exports = {
     "./views/**/*.ejs",
     "./*.html",
     "./pages/**/*.html",
-    "./assets/**/*.js",
+    "./public/**/*.js",
   ],
+  safelist: ["text-green-400", "text-red-400", "text-white"],
   theme: {
     extend: {
       colors: {

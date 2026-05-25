@@ -2,6 +2,7 @@ export interface User {
   email: string;
   password: string;
   collection?: number[]; // game IDs
+  gtgScore?: number;
 }
 
 export interface Screenshot {
