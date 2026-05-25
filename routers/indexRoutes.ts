@@ -3,6 +3,7 @@ import {
   getGames,
   userCollection,
   gameDataCollection,
+  addGameToCollection,
 } from "../utils/database";
 
 const router = Router();
@@ -77,23 +78,16 @@ router.post("/collection/remove/:id", async (req, res) => {
   });
 });
 
-router.post("/collection/add", async (req, res, next) => {
+
+//main page add collection knop
+router.post("/collection/add", async (req, res) => {
+  const { email, gameId } = req.body;
+
   try {
-    const { gameId } = req.body;
-    const email = req.session.email;
-
-    if (!email) {
-      return res.status(401).json({ error: "Niet ingelogd" });
-    }
-
-    await userCollection.updateOne(
-      { email },
-      { $addToSet: { collection: gameId } },
-    );
-
-    res.json({ success: true });
+    await addGameToCollection(email, gameId);
+    res.sendStatus(200);
   } catch (err) {
-    next(err);
+    res.status(500).json({ error: "Failed to add game" });
   }
 });
 

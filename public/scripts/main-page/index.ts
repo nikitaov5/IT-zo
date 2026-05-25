@@ -1,7 +1,9 @@
 import { ObjectId } from "mongodb";
 import { Games } from "./interfaces/interfaces";
+import { addGameToCollection } from "../../../utils/database"
 
 let currentPage = 1;
+let selectedGame: Games | null = null
 async function loadGames() {
   try {
     const response = await fetch(`/home?page=${currentPage}`);
@@ -29,7 +31,7 @@ async function loadGames() {
       gameDiv.appendChild(title);
       grid?.appendChild(gameDiv);
 
-      let selectedGame: Games | null = null
+      
       gameDiv.addEventListener("click", () => {
         selectedGame = game;
         document.getElementById("gameName")!.textContent = game.name;
@@ -50,6 +52,7 @@ async function loadGames() {
 
       document.getElementById("gameGenre")!.textContent =
       `Genres: ${game.genres.map(g => g.name).join(", ")}`;
+      return selectedGame;
       
 });;
     });
@@ -70,6 +73,21 @@ document.getElementById("prevPage")?.addEventListener("click", () => {
     loadGames();
     document.getElementById("pageNumber")!.textContent = currentPage.toString();
   }
+});
+
+document.getElementById("collectionButton")?.addEventListener("click", async () => {
+  if (!selectedGame) return;
+
+  await fetch("/collection/add", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: "admin@gmail.be", //DIT MOET GEMAAKT WORDEN
+      gameId: selectedGame.id,  
+    }),
+  });
 });
 
 window.addEventListener("DOMContentLoaded", () => {
