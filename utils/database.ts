@@ -1,4 +1,3 @@
-// database.ts
 import { Collection, MongoClient } from "mongodb";
 import bcrypt from "bcrypt";
 import { User, Games } from "./database-interfaces";
@@ -48,6 +47,7 @@ export async function connect() {
 export async function getGames(page: number) {
   const limit = 24;
   const skip = (page - 1) * limit;
+  console.log("skip:", skip, "limit:", limit);
   return await gameDataCollection.find().skip(skip).limit(limit).toArray();
 }
 

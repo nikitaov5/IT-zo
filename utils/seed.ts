@@ -31,18 +31,20 @@ async function seedGames() {
 
   console.log("Games worden geseed...");
 
-  const pages = [1, 2, 3];
+  const MAX_GAMES = 240;
   const allGames: any[] = [];
+  const RAWG_API_KEY = process.env.RAWG_API_KEY;
+  let url = `https://api.rawg.io/api/games?key=${RAWG_API_KEY}&ordering=release&page_size=20`
 
-  for (const page of pages) {
-    const res = await fetch(
-      `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-rating&page=${page}&page_size=20`,
-    );
+  while (url && allGames.length < MAX_GAMES) {
+    const res = await fetch(url);
     const data = await res.json();
 
     if (data.results) {
       allGames.push(...data.results);
+      console.log(`Geladen: ${allGames.length} games...`);
     }
+    url = data.next ?? null; //als er geen volgende pagina is
   }
 
   const gamesWithScreenshots = await Promise.all(
