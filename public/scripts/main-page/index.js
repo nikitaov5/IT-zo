@@ -109,19 +109,40 @@ searchInput === null || searchInput === void 0 ? void 0 : searchInput.addEventLi
         console.error("Fout bij toevoegen:", error);
     }
 }));
-(_b = document.querySelector("[data-action='set-current']")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => {
+(_b = document.querySelector("[data-action='set-current']")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => __awaiter(void 0, void 0, void 0, function* () {
     if (!currentGameData) {
         alert("Kies eerst een game");
         return;
     }
+    yield fetch("/home/current-game", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ gameId: currentGameData.id }),
+    });
+    showCurrentGame(currentGameData);
+}));
+function showCurrentGame(game) {
     const container = document.getElementById("currentGame");
     const img = document.getElementById("currentGameImage");
     const name = document.getElementById("currentGameName");
-    img.src = currentGameData.background_image;
-    name.textContent = currentGameData.name;
+    img.src = game.background_image;
+    name.textContent = game.name;
     container === null || container === void 0 ? void 0 : container.classList.remove("hidden");
     container === null || container === void 0 ? void 0 : container.classList.add("flex");
-});
+}
+function loadCurrentGame() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield fetch("/home/current-game");
+            const game = yield response.json();
+            if (game)
+                showCurrentGame(game);
+        }
+        catch (error) {
+            console.error("Fout bij laden huidige game:", error);
+        }
+    });
+}
 (_c = document.getElementById("nextPage")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", () => {
     currentPage++;
     loadGames();
@@ -135,4 +156,5 @@ searchInput === null || searchInput === void 0 ? void 0 : searchInput.addEventLi
     }
 });
 loadGames();
+loadCurrentGame();
 export {};

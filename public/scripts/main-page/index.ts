@@ -115,22 +115,43 @@ document.querySelector("[data-action='add-collection']")?.addEventListener("clic
   }
 });
 
-document.querySelector("[data-action='set-current']")?.addEventListener("click", () => {
+document.querySelector("[data-action='set-current']")?.addEventListener("click", async () => {
   if (!currentGameData) {
     alert("Kies eerst een game");
     return;
   }
 
+  await fetch("/home/current-game", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ gameId: currentGameData.id }),
+  });
+
+  showCurrentGame(currentGameData);
+
+
+});
+
+function showCurrentGame(game: Games) {
   const container = document.getElementById("currentGame");
   const img = document.getElementById("currentGameImage") as HTMLImageElement;
   const name = document.getElementById("currentGameName");
 
-  img.src = currentGameData.background_image;
-  name!.textContent = currentGameData.name;
+  img.src = game.background_image;
+  name!.textContent = game.name;
   container?.classList.remove("hidden");
-  container?.classList.add("flex");
-});
+  container?.classList.add("flex"); 
+  }
 
+async function loadCurrentGame() {
+  try {
+    const response = await fetch("/home/current-game");
+    const game = await response.json();
+    if (game) showCurrentGame(game);
+  } catch (error) {
+    console.error("Fout bij laden huidige game:", error);
+  }
+}
 document.getElementById("nextPage")?.addEventListener("click", () => {
   currentPage++;
   loadGames();
@@ -146,5 +167,7 @@ document.getElementById("prevPage")?.addEventListener("click", () => {
 });
 
 
-  loadGames();
+loadGames();
+loadCurrentGame();
+
 

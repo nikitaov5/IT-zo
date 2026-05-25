@@ -50,6 +50,35 @@ router.get("/home/search", requireLogin, async (req, res, next) => {
   }
 });
 
+router.get("/home/current-game", requireLogin, async (req, res, next) => {
+  try {
+    const email = req.session.email;
+    const user = await userCollection.findOne({ email });
+
+    if (!user?.currentGame) return res.json(null);
+
+    const game = await gameDataCollection.findOne({ id: user.currentGame });
+    res.json(game);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/home/current-game", requireLogin, async (req, res, next) => {
+  try {
+    const { gameId } = req.body;
+    const email = req.session.email;
+
+    await userCollection.updateOne(
+      { email },
+      { $set: { currentGame: gameId } }
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    next(err);
+  }
+});
 
 
 router.get("/collection", requireLogin, async (req, res, next) => {
