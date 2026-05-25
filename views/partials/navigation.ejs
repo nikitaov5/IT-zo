@@ -92,14 +92,17 @@
         </a>
       </nav>
 
-      <!-- SEARCH -->
-      <div class="flex-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
-        <div
-          class="w-full rounded-full bg-slate-100 border border-slate-300 px-4 py-2 text-sm sm:text-base text-slate-500 focus-within:ring-2 focus-within:ring-indigo-400 transition"
-        >
-          Game zoeken...
-        </div>
-      </div>
+      <div class="ml-auto flex items-center gap-4">
+    <div id="currentGame" class="hidden items-center gap-2">
+      <img id="currentGameImage" class="w-8 h-8 rounded object-cover border border-slate-400" alt="" />
+      <span id="currentGameName" class="text-sm font-semibold text-slate-800 truncate max-w-32"></span>
     </div>
-  </header>
 
+    <div class="relative w-64">
+      <input type="text" id="searchInput" placeholder="Zoek een game..." class="w-full rounded-full bg-slate-100 border border-slate-300 px-4 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:bg-white transition text-slate-800 placeholder-slate-400" />
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 15.803a7.5 7.5 0 0 0 10.607 0Z" />
+      </svg>
+    </div>
+  </div>
+  </header>

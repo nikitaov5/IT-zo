@@ -1,122 +1,100 @@
-<!DOCTYPE html>
-<html lang="nl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<%- include ('partials/header') %>
 
-    <title>Registreren</title>
+<title>Registreren</title>
 
-    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.png">
-    <link href="/css/output.css" rel="stylesheet" />
-    <script src="/scripts/register/register.js" defer></script>
-  </head>
+<script src="/scripts/register/register.js" defer></script>
+</head>
+<body class="min-h-screen w-full bg-slate-900 text-slate-100 flex flex-col">
+<header
+  class="fixed top-0 left-0 right-0 z-50 h-16 bg-slate-200 text-slate-800 border-b border-slate-300"
+>
+  <div
+    class="h-full max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6"
+  >
+    <h1 class="text-lg sm:text-xl font-bold">
+      IT&Zo Hub
+    </h1>
 
-  <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
-
-    <!-- HEADER -->
-    <header
-      class="bg-slate-200 text-slate-800 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 px-4 py-4"
-    >
-      <h1 class="text-lg sm:text-xl font-bold">
-        IT&Zo Hub
-      </h1>
-
-      <nav class="flex flex-wrap justify-center gap-2 sm:gap-3 sm:ml-auto">
-        <a
-          href="/"
-          class="px-4 py-2 rounded hover:bg-slate-300 transition"
-        >
-          Home
-        </a>
-
-        <a
-          href="/register"
-          class="bg-black text-white px-4 py-2 rounded"
-        >
-          Registreren
-        </a>
-
-        <a
-          href="/login"
-          class="px-4 py-2 rounded hover:bg-slate-300 transition"
-        >
-          Inloggen
-        </a>
-      </nav>
-    </header>
-
-    <!-- MAIN -->
-    <main
-      class="flex-1 flex justify-center items-start sm:items-center px-3 sm:px-6 py-6 sm:py-10"
-    >
-
-      <section
-        class="bg-slate-800 w-full max-w-md p-5 sm:p-8 rounded-xl sm:rounded-2xl shadow-lg border border-slate-700"
+    <nav class="flex items-center gap-2 sm:gap-3">
+      <a
+        href="/register"
+        class="bg-slate-800 text-slate-100 px-4 py-2 rounded-lg"
       >
+        Registreren
+      </a>
 
-        <h2
-          class="text-2xl sm:text-3xl font-bold mb-6 text-center"
-        >
-          Registreren
-        </h2>
+      <a
+        href="/login"
+        class="px-4 py-2 rounded-lg hover:bg-slate-300 transition"
+      >
+        Inloggen
+      </a>
+    </nav>
+  </div>
+</header>
 
-        <form id="registerForm" class="flex flex-col gap-4">
+<main
+  class="flex-1 flex justify-center items-start sm:items-center px-3 sm:px-6 py-24"
+>
+  <section
+    class="bg-slate-800 w-full max-w-md p-5 sm:p-8 rounded-2xl shadow-2xl border border-slate-700"
+  >
+    <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-center">
+      Registreren
+    </h2>
 
-          <div
-            id="alertBox"
-            class="hidden p-3 text-sm rounded-xl border"
-          ></div>
+    <form id="registerForm" class="flex flex-col gap-4">
+      <div
+        id="alertBox"
+        class="hidden p-3 text-sm rounded-xl border"
+      ></div>
 
-          <div class="flex flex-col text-left">
-            <label class="mb-1 text-sm text-slate-300">
-              E-mail
-            </label>
+      <div class="flex flex-col text-left">
+        <label class="mb-1 text-sm text-slate-300">
+          E-mail
+        </label>
 
-            <input
-              type="email"
-              id="email"
-              class="w-full p-3 text-base rounded-lg bg-slate-700 border border-slate-600 outline-none focus:ring-2 focus:ring-blue-500 transition"
-              required
-            />
-          </div>
+        <input
+          type="email"
+          id="email"
+          class="w-full p-3 text-base rounded-lg bg-slate-700 border border-slate-600 outline-none focus:ring-2 focus:ring-blue-500 transition"
+          required
+        />
+      </div>
 
-          <div class="flex flex-col text-left">
-            <label class="mb-1 text-sm text-slate-300">
-              Wachtwoord
-            </label>
+      <div class="flex flex-col text-left">
+        <label class="mb-1 text-sm text-slate-300">
+          Wachtwoord
+        </label>
 
-            <input
-              type="password"
-              id="password"
-              class="w-full p-3 text-base rounded-lg bg-slate-700 border border-slate-600 outline-none focus:ring-2 focus:ring-blue-500 transition"
-              required
-            />
-          </div>
+        <input
+          type="password"
+          id="password"
+          class="w-full p-3 text-base rounded-lg bg-slate-700 border border-slate-600 outline-none focus:ring-2 focus:ring-blue-500 transition"
+          required
+        />
+      </div>
 
-          <div class="flex flex-col text-left">
-            <label class="mb-1 text-sm text-slate-300">
-              Herhaal wachtwoord
-            </label>
+      <div class="flex flex-col text-left">
+        <label class="mb-1 text-sm text-slate-300">
+          Herhaal wachtwoord
+        </label>
 
-            <input
-              type="password"
-              id="confirmPassword"
-              class="w-full p-3 text-base rounded-lg bg-slate-700 border border-slate-600 outline-none focus:ring-2 focus:ring-blue-500 transition"
-              required
-            />
-          </div>
+        <input
+          type="password"
+          id="confirmPassword"
+          class="w-full p-3 text-base rounded-lg bg-slate-700 border border-slate-600 outline-none focus:ring-2 focus:ring-blue-500 transition"
+          required
+        />
+      </div>
 
-          <button
-            class="mt-2 bg-blue-600 hover:bg-blue-700 transition py-3 text-base sm:text-lg rounded-lg font-semibold"
-          >
-            Registreren
-          </button>
+      <button
+        class="mt-2 bg-blue-600 hover:bg-blue-700 transition py-3 text-base sm:text-lg rounded-lg font-semibold"
+      >
+        Registreren
+      </button>
+    </form>
+  </section>
+</main>
 
-        </form>
-
-      </section>
-
-    </main>
-
-  </body>
-</html>
+<%- include ('partials/footer') %>
