@@ -7,10 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var _a, _b, _c, _d;
+var _a, _b, _c, _d, _e;
 let currentPage = 1;
 let selectedGameId = null;
 let currentGameData = null;
+let currentGames = [];
 function loadGames() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -18,7 +19,8 @@ function loadGames() {
                 headers: { Accept: "application/json" },
             });
             const games = yield response.json();
-            renderGames(games);
+            currentGames = games;
+            renderGames(currentGames);
         }
         catch (error) {
             console.error(error);
@@ -58,13 +60,13 @@ function renderGames(games) {
             document.getElementById("gameImage").src =
                 game.background_image;
             document.getElementById("gameRelease").textContent =
-                `Released: ${game.released}`;
+                `Release Datum: ${game.released}`;
             document.getElementById("gamePlaytime").textContent =
                 `Average Playtime: ${game.playtime} uur`;
             document.getElementById("gameRating").textContent =
                 `Rating: ${game.rating}/5`;
             document.getElementById("gamePlatform").textContent =
-                `Platforms: ${game.platforms.map((p) => p.platform.name).join(", ")}`;
+                `Platform: ${game.platforms.map((p) => p.platform.name).join(", ")}`;
             document.getElementById("gameGenre").textContent = `Genres: ${game.genres
                 .map((g) => g.name)
                 .join(", ")}`;
@@ -89,6 +91,18 @@ searchInput === null || searchInput === void 0 ? void 0 : searchInput.addEventLi
         console.error("Search error:", error);
     }
 }));
+const alertBox = document.getElementById("alertBox");
+function showAlert(message, success = true) {
+    if (!alertBox)
+        return;
+    alertBox.className = success
+        ? "fixed top-24 right-4 z-50 p-4 rounded text-sm bg-green-900 text-green-300 border border-green-700"
+        : "fixed top-24 right-4 z-50 p-4 rounded text-sm bg-red-900 text-red-300 border border-red-700";
+    alertBox.textContent = message;
+    setTimeout(() => {
+        alertBox.classList.add("hidden");
+    }, 3000);
+}
 (_a = document.querySelector("[data-action='add-collection']")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => __awaiter(void 0, void 0, void 0, function* () {
     if (!selectedGameId) {
         alert("Kies eerst een game");
@@ -102,7 +116,7 @@ searchInput === null || searchInput === void 0 ? void 0 : searchInput.addEventLi
         });
         const data = yield response.json();
         if (data.success) {
-            alert("Game toegevoegd aan collectie!");
+            showAlert("Game toegevoegd aan collectie!");
         }
     }
     catch (error) {
@@ -154,6 +168,27 @@ function loadCurrentGame() {
         loadGames();
         document.getElementById("pageNumber").textContent = currentPage.toString();
     }
+});
+(_e = document
+    .getElementById("sortGames")) === null || _e === void 0 ? void 0 : _e.addEventListener("change", (e) => {
+    const sort = e.target.value;
+    const sortedGames = [...currentGames];
+    switch (sort) {
+        case "ratingDesc":
+            sortedGames.sort((a, b) => b.rating - a.rating);
+            break;
+        case "ratingAsc":
+            sortedGames.sort((a, b) => a.rating - b.rating);
+            break;
+        case "name":
+            sortedGames.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        case "released":
+            sortedGames.sort((a, b) => new Date(b.released).getTime() -
+                new Date(a.released).getTime());
+            break;
+    }
+    renderGames(sortedGames);
 });
 loadGames();
 loadCurrentGame();

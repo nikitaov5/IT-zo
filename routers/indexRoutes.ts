@@ -14,7 +14,6 @@ declare module "express-session" {
   }
 }
 
-/* ---------------- CURRENT GAME GLOBAL ---------------- */
 
 router.use(async (req, res, next) => {
   try {
@@ -44,7 +43,6 @@ router.use(async (req, res, next) => {
   }
 });
 
-/* ---------------- ROUTES ---------------- */
 
 router.get("/", (req, res) => res.render("index"));
 
@@ -54,7 +52,6 @@ router.get("/gtg", requireLogin, (req, res) => res.render("gtg"));
 
 router.get("/unavailable", (req, res) => res.render("unavailable"));
 
-/* ---------------- HOME ---------------- */
 
 router.get("/home", requireLogin, async (req, res, next) => {
   try {
@@ -78,7 +75,6 @@ router.get("/home", requireLogin, async (req, res, next) => {
   }
 });
 
-/* ---------------- SEARCH ---------------- */
 
 router.get("/home/search", requireLogin, async (req, res, next) => {
   try {
@@ -102,7 +98,6 @@ router.get("/home/search", requireLogin, async (req, res, next) => {
   }
 });
 
-/* ---------------- CURRENT GAME ---------------- */
 
 router.get("/home/current-game", requireLogin, async (req, res, next) => {
   try {
@@ -149,7 +144,6 @@ router.post("/home/current-game", requireLogin, async (req, res, next) => {
   }
 });
 
-/* ---------------- COLLECTION ---------------- */
 
 router.get("/collection", requireLogin, async (req, res, next) => {
   try {

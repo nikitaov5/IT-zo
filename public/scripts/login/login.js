@@ -25,7 +25,7 @@ form.addEventListener("submit", async (e) => {
       alertBox.innerHTML = "Login gelukt!";
 
       setTimeout(() => {
-        window.location.href = "/home";
+        window.location.href = "/";
       }, 1000);
     } else {
       throw new Error(data.message || "Login mislukt");
