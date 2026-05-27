@@ -1,0 +1,4 @@
+sudo apk update
+sudo apk add nodejs npm
+
+omdat alpine geen node heeft
