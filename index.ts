@@ -37,6 +37,7 @@ app.use(
 app.use("/", indexRouter);
 app.use("/", gameRoutes);
 app.use("/", authRouter);
+app.use(requireLogin);
 
 const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   console.error(err);

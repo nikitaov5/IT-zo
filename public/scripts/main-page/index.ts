@@ -3,6 +3,7 @@ import { Games } from "./interfaces/interfaces";
 let currentPage = 1;
 let selectedGameId: number | null = null;
 let currentGameData: Games | null = null;
+let currentGames: Games[] = [];
 
 async function loadGames() {
   try {
@@ -10,7 +11,8 @@ async function loadGames() {
       headers: { Accept: "application/json" },
   });
     const games: Games[] = await response.json();
-    renderGames(games);
+    currentGames = games;
+    renderGames(currentGames);
   } catch (error) {
     console.error(error);
   }
@@ -52,13 +54,13 @@ function renderGames(games: Games[]) {
       (document.getElementById("gameImage") as HTMLImageElement).src =
         game.background_image;
       document.getElementById("gameRelease")!.textContent =
-        `Released: ${game.released}`;
+        `Release Datum: ${game.released}`;
       document.getElementById("gamePlaytime")!.textContent =
         `Average Playtime: ${game.playtime} uur`;
       document.getElementById("gameRating")!.textContent =
         `Rating: ${game.rating}/5`;
       document.getElementById("gamePlatform")!.textContent =
-        `Platforms: ${game.platforms.map((p) => p.platform.name).join(", ")}`;
+        `Platform: ${game.platforms.map((p) => p.platform.name).join(", ")}`;
       document.getElementById("gameGenre")!.textContent = `Genres: ${game.genres
         .map((g) => g.name)
         .join(", ")}`;
@@ -92,6 +94,22 @@ searchInput?.addEventListener("input", async () => {
   }
 });
 
+const alertBox = document.getElementById("alertBox");
+
+function showAlert(message: string, success = true) {
+  if (!alertBox) return;
+
+  alertBox.className = success
+    ? "fixed top-24 right-4 z-50 p-4 rounded text-sm bg-green-900 text-green-300 border border-green-700"
+    : "fixed top-24 right-4 z-50 p-4 rounded text-sm bg-red-900 text-red-300 border border-red-700";
+
+  alertBox.textContent = message;
+
+  setTimeout(() => {
+    alertBox.classList.add("hidden");
+  }, 3000);
+}
+
 document.querySelector("[data-action='add-collection']")?.addEventListener("click", async () => {
   if (!selectedGameId) {
     alert("Kies eerst een game");
@@ -107,30 +125,51 @@ document.querySelector("[data-action='add-collection']")?.addEventListener("clic
 
     const data = await response.json();
 
+  
     if (data.success) {
-      alert("Game toegevoegd aan collectie!");
+      showAlert("Game toegevoegd aan collectie!");
     }
   } catch (error) {
     console.error("Fout bij toevoegen:", error);
   }
 });
 
-document.querySelector("[data-action='set-current']")?.addEventListener("click", () => {
+document.querySelector("[data-action='set-current']")?.addEventListener("click", async () => {
   if (!currentGameData) {
     alert("Kies eerst een game");
     return;
   }
 
+  await fetch("/home/current-game", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ gameId: currentGameData.id }),
+  });
+
+  showCurrentGame(currentGameData);
+});
+
+function showCurrentGame(game: Games) {
   const container = document.getElementById("currentGame");
   const img = document.getElementById("currentGameImage") as HTMLImageElement;
   const name = document.getElementById("currentGameName");
 
-  img.src = currentGameData.background_image;
-  name!.textContent = currentGameData.name;
+  img.src = game.background_image;
+  name!.textContent = game.name;
   container?.classList.remove("hidden");
-  container?.classList.add("flex");
-});
+  container?.classList.add("flex"); 
+  }
 
+async function loadCurrentGame() {
+  try {
+    const response = await fetch("/home/current-game");
+    const game = await response.json();
+    if (game) showCurrentGame(game);
+    
+  } catch (error) {
+    console.error("Fout bij laden huidige game:", error);
+  }
+}
 document.getElementById("nextPage")?.addEventListener("click", () => {
   currentPage++;
   loadGames();
@@ -145,6 +184,40 @@ document.getElementById("prevPage")?.addEventListener("click", () => {
   }
 });
 
+document
+  .getElementById("sortGames")
+  ?.addEventListener("change", (e) => {
+    const sort = (e.target as HTMLSelectElement).value;
 
-  loadGames();
+    const sortedGames = [...currentGames];
+
+    switch (sort) {
+      case "ratingDesc":
+        sortedGames.sort((a, b) => b.rating - a.rating);
+        break;
+
+      case "ratingAsc":
+        sortedGames.sort((a, b) => a.rating - b.rating);
+        break;
+
+      case "name":
+        sortedGames.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+
+      case "released":
+        sortedGames.sort(
+          (a, b) =>
+            new Date(b.released).getTime() -
+            new Date(a.released).getTime()
+        );
+        break;
+    }
+
+    renderGames(sortedGames);
+  });
+
+
+loadGames();
+loadCurrentGame();
+
 

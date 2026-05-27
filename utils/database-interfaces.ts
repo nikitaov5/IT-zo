@@ -3,6 +3,7 @@ export interface User {
   password: string;
   collection?: number[]; // game IDs
   gtgScore?: number;
+  currentGame?: number;
 }
 
 export interface Screenshot {

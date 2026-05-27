@@ -1,71 +1,100 @@
-<!DOCTYPE html>
-<html lang="nl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registreren</title>
-    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.png">
-    <link href="/css/output.css" rel="stylesheet" />
-    <script src="/scripts/register/register.js" defer></script>
-  </head>
+<%- include ('partials/header') %>
 
-  <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+<title>Registreren</title>
 
-    <!-- HEADER -->
-    <header class="bg-slate-200 text-slate-800 flex flex-col sm:flex-row items-center p-4 gap-4">
-      <h1 class="text-xl font-bold">Landing pagina</h1>
+<script src="/scripts/register/register.js" defer></script>
+</head>
+<body class="min-h-screen w-full bg-slate-900 text-slate-100 flex flex-col">
+<header
+  class="fixed top-0 left-0 right-0 z-50 h-16 bg-slate-200 text-slate-800 border-b border-slate-300"
+>
+  <div
+    class="h-full max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6"
+  >
+    <h1 class="text-lg sm:text-xl font-bold">
+      IT&Zo Hub
+    </h1>
 
-      <nav class="flex gap-3 sm:ml-auto">
-        <a href="/" class="px-4 py-2 rounded">Home</a>
-        <a href="/register" class="bg-black text-white px-4 py-2 rounded">Registreren</a>
-        <a href="/login" class="border px-4 py-2 rounded">Inloggen</a>
-      </nav>
-    </header>
+    <nav class="flex items-center gap-2 sm:gap-3">
+      <a
+        href="/register"
+        class="bg-slate-800 text-slate-100 px-4 py-2 rounded-lg"
+      >
+        Registreren
+      </a>
 
-    <!-- MAIN -->
-    <main class="flex-1 flex justify-center items-start sm:items-center px-0 sm:px-6 py-6 sm:py-10">
+      <a
+        href="/login"
+        class="px-4 py-2 rounded-lg hover:bg-slate-300 transition"
+      >
+        Inloggen
+      </a>
+    </nav>
+  </div>
+</header>
 
-      <section class="bg-slate-800 w-full sm:max-w-md p-6 sm:p-8 rounded-none sm:rounded-2xl shadow-lg">
+<main
+  class="flex-1 flex justify-center items-start sm:items-center px-3 sm:px-6 py-24"
+>
+  <section
+    class="bg-slate-800 w-full max-w-md p-5 sm:p-8 rounded-2xl shadow-2xl border border-slate-700"
+  >
+    <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-center">
+      Registreren
+    </h2>
 
-        <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-center">
-          Registreren
-        </h2>
+    <form id="registerForm" class="flex flex-col gap-4">
+      <div
+        id="alertBox"
+        class="hidden p-3 text-sm rounded-xl border"
+      ></div>
 
-        <form id="registerForm" class="flex flex-col gap-4">
+      <div class="flex flex-col text-left">
+        <label class="mb-1 text-sm text-slate-300">
+          E-mail
+        </label>
 
-          <div id="alertBox" class="hidden p-3 text-sm rounded"></div>
+        <input
+          type="email"
+          id="email"
+          class="w-full p-3 text-base rounded-lg bg-slate-700 border border-slate-600 outline-none focus:ring-2 focus:ring-blue-500 transition"
+          required
+        />
+      </div>
 
-          <div class="flex flex-col text-left">
-            <label class="mb-1 text-sm">E-mail</label>
-            <input type="email" id="email"
-              class="p-3 text-base rounded bg-slate-700 focus:ring-2 focus:ring-blue-500"
-              required />
-          </div>
+      <div class="flex flex-col text-left">
+        <label class="mb-1 text-sm text-slate-300">
+          Wachtwoord
+        </label>
 
-          <div class="flex flex-col text-left">
-            <label class="mb-1 text-sm">Wachtwoord</label>
-            <input type="password" id="password"
-              class="p-3 text-base rounded bg-slate-700 focus:ring-2 focus:ring-blue-500"
-              required />
-          </div>
+        <input
+          type="password"
+          id="password"
+          class="w-full p-3 text-base rounded-lg bg-slate-700 border border-slate-600 outline-none focus:ring-2 focus:ring-blue-500 transition"
+          required
+        />
+      </div>
 
-          <div class="flex flex-col text-left">
-            <label class="mb-1 text-sm">Herhaal wachtwoord</label>
-            <input type="password" id="confirmPassword"
-              class="p-3 text-base rounded bg-slate-700 focus:ring-2 focus:ring-blue-500"
-              required />
-          </div>
+      <div class="flex flex-col text-left">
+        <label class="mb-1 text-sm text-slate-300">
+          Herhaal wachtwoord
+        </label>
 
-          <button
-            class="mt-4 bg-blue-600 hover:bg-blue-700 transition py-3 text-lg rounded font-semibold">
-            Registreren
-          </button>
+        <input
+          type="password"
+          id="confirmPassword"
+          class="w-full p-3 text-base rounded-lg bg-slate-700 border border-slate-600 outline-none focus:ring-2 focus:ring-blue-500 transition"
+          required
+        />
+      </div>
 
-        </form>
+      <button
+        class="mt-2 bg-blue-600 hover:bg-blue-700 transition py-3 text-base sm:text-lg rounded-lg font-semibold"
+      >
+        Registreren
+      </button>
+    </form>
+  </section>
+</main>
 
-      </section>
-
-    </main>
-
-  </body>
-</html>
+<%- include ('partials/footer') %>

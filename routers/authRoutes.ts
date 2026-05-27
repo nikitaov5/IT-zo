@@ -1,23 +1,34 @@
 import { Router } from "express";
 import { createUser, loginUser } from "../utils/database";
+import { error } from "node:console";
+import { requireLogin } from "../middleware/requireLogin";
 
 const router = Router();
 
 router.get("/login", (req, res) => res.render("login"));
 
-router.post("/login", async (req, res, next) => {
+router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({ message: "Email and password are required" });
-    }
-
     const user = await loginUser(email, password);
+
     req.session.email = email;
-    res.json({ message: "Login Success", user });
+
+    req.session.save((err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Session error" });
+      }
+
+      console.log("Session after login:", req.session);
+
+      res.json({
+        message: "Login Success",
+        user,
+        redirect: "/",
+      });
+    });
   } catch (err: any) {
     res.status(401).json({ message: err.message });
   }
@@ -47,7 +58,7 @@ router.post("/register", async (req, res, next) => {
 router.post("/logout", (req, res, next) => {
   try {
     req.session.destroy(() => {
-      res.json({ message: "Logged out" });
+      res.redirect("/")
     });
   } catch (err) {
     next(err);
